@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.drive.DriveDistanceMeters;
 import frc.robot.util.TrajectoryHelper;
-import frc.robot.commands.newDrive.FollowTrajectory;
+import frc.robot.commands.drive.FollowHolonomicTrajectory;
 
 public class Left2Piece extends SequentialCommandGroup {
     public Left2Piece(Swerve s_Swerve, Arm s_Arm, Wrist s_wrist, Grabber s_Grabber,Timer m_timer){
@@ -26,8 +26,8 @@ public class Left2Piece extends SequentialCommandGroup {
         Command waitcommand = new WaitCommand(1);
         Command as1command = new DriveDistanceMeters(s_Swerve, 1, .5);
         Command as2command = new DriveDistanceMeters(s_Swerve, -1, .5);
-        Command traj1 = new FollowTrajectory(s_Swerve, TrajectoryHelper.loadJSONTrajectory("Blue1_1.wpilib.json"), true);
-        Command traj2 = new FollowTrajectory(s_Swerve, TrajectoryHelper.loadJSONTrajectory("Blue1_2.wpilib.json"), false);
+        Command traj1 = new FollowHolonomicTrajectory(s_Swerve, TrajectoryHelper.loadJSONTrajectory("Blue1_1.wpilib.json"), true);
+        Command traj2 = new FollowHolonomicTrajectory(s_Swerve, TrajectoryHelper.loadJSONTrajectory("Blue1_2.wpilib.json"), false);
 
 
         addCommands(

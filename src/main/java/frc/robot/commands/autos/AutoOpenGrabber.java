@@ -22,7 +22,7 @@ public class AutoOpenGrabber extends CommandBase {
 
     @Override
     public void execute() {
-        s_Grabber.grabPiece();
+        s_Grabber.dropPiece();
     }
 
     @Override

@@ -17,31 +17,26 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.SwerveDrive;
-import frc.robot.util.preferenceconstants.DoublePreferenceConstant;
-import frc.robot.util.preferenceconstants.PIDPreferenceConstants;
+import frc.robot.subsystems.Swerve;
 
 public class FollowHolonomicTrajectory extends CommandBase {
-  private final SwerveDrive m_drive;
+  private final Swerve m_drive;
   private final Trajectory m_trajectory;
   private final Rotation2d m_rotation;
   private final boolean m_resetOdometry;
   private final Timer m_timer = new Timer();
 
-  private final static PIDPreferenceConstants p_vxPID = new PIDPreferenceConstants("Auto/vxPID/");
-  private final static PIDPreferenceConstants p_vyPID = new PIDPreferenceConstants("Auto/vyPID/");
-  private final static PIDPreferenceConstants p_thetaPID = new PIDPreferenceConstants("Auto/theta/PID/");
-  private final static DoublePreferenceConstant p_thetaMaxVelocity = new DoublePreferenceConstant("Auto/theta/Max Velocity", Math.PI);;
-  private final static DoublePreferenceConstant p_thetaMaxAcceleration = new DoublePreferenceConstant("Auto/theta/Max Acceleration", Math.PI);
-  private final static DoublePreferenceConstant p_xTolerance = new DoublePreferenceConstant("Auto/Tolerance/x", 0.1);
-  private final static DoublePreferenceConstant p_yTolerance = new DoublePreferenceConstant("Auto/Tolerance/y", 0.1);
-  private final static DoublePreferenceConstant p_thetaTolerance = new DoublePreferenceConstant("Auto/Tolerance/theta", 0.05);
+  private final static double p_thetaMaxVelocity = Math.PI;
+  private final static double p_thetaMaxAcceleration = Math.PI;
+  private final static double p_xTolerance = 0.1;
+  private final static double p_yTolerance = 0.1;
+  private final static double p_thetaTolerance = 0.05;
 
   private HolonomicDriveController m_controller;
   private boolean m_cancel = false;
 
   /** Creates a new FollowHolonomicTrajectory. */
-  public FollowHolonomicTrajectory(SwerveDrive drive, Trajectory trajectory, Rotation2d startRotation,  Rotation2d endRotation, boolean resetOdometry) {
+  public FollowHolonomicTrajectory(Swerve drive, Trajectory trajectory, Rotation2d startRotation,  Rotation2d endRotation, boolean resetOdometry) {
     m_drive = drive;
     m_trajectory = trajectory;
     m_rotation = endRotation.minus(startRotation);
@@ -50,7 +45,7 @@ public class FollowHolonomicTrajectory extends CommandBase {
     addRequirements(m_drive);
   }
 
-  public FollowHolonomicTrajectory(SwerveDrive drive, Trajectory trajectory, boolean resetOdometry) {
+  public FollowHolonomicTrajectory(Swerve drive, Trajectory trajectory, boolean resetOdometry) {
     this(drive, trajectory, new Rotation2d(), new Rotation2d(), resetOdometry);
   }
 
@@ -60,17 +55,17 @@ public class FollowHolonomicTrajectory extends CommandBase {
     m_cancel = false;
 
     m_controller = new HolonomicDriveController(
-      new PIDController(p_vxPID.getKP().getValue(), p_vxPID.getKI().getValue(), p_vxPID.getKD().getValue()),
-      new PIDController(p_vyPID.getKP().getValue(), p_vyPID.getKI().getValue(), p_vyPID.getKD().getValue()),
-      new ProfiledPIDController(p_thetaPID.getKP().getValue(), p_thetaPID.getKI().getValue(), p_thetaPID.getKD().getValue(), 
-        new TrapezoidProfile.Constraints(p_thetaMaxVelocity.getValue(), p_thetaMaxAcceleration.getValue())));
+      new PIDController(0.0, 0.0, 0.0),
+      new PIDController(0.0, 0.0, 0.0),
+      new ProfiledPIDController(0.0, 0.0, 0.0, 
+        new TrapezoidProfile.Constraints(p_thetaMaxVelocity, p_thetaMaxAcceleration)));
 
-    m_controller.setTolerance(new Pose2d(p_xTolerance.getValue(), p_yTolerance.getValue(), Rotation2d.fromDegrees(p_thetaTolerance.getValue())));
+    m_controller.setTolerance(new Pose2d(p_xTolerance, p_yTolerance, Rotation2d.fromDegrees(p_thetaTolerance)));
 
     if (m_resetOdometry) {
       m_drive.resetTrajectoryPose(m_trajectory.getInitialPose());
     } else {
-      Transform2d offset = m_drive.getOdometryPose().minus(m_trajectory.getInitialPose());
+      Transform2d offset = m_drive.getPose().minus(m_trajectory.getInitialPose());
       if (offset.getTranslation().getDistance(new Translation2d()) > 3.0 || offset.getRotation().getDegrees() > 45.0 ) {
         System.out.println("!!!canceling holomic trajectory!!!");
         m_cancel = true;
@@ -85,7 +80,7 @@ public class FollowHolonomicTrajectory extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Pose2d currentPose = m_drive.getOdometryPose();
+    Pose2d currentPose = m_drive.getPose();
     Trajectory.State desiredState = m_trajectory.sample(m_timer.get());
     Rotation2d targetRotation = new Rotation2d(m_timer.get() * m_rotation.getRadians() / m_trajectory.getTotalTimeSeconds());
 
