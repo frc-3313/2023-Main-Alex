@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import frc.robot.Constants;
 
 
 public class ButtonBox extends Joystick {
@@ -64,15 +65,15 @@ public class ButtonBox extends Joystick {
     public Trigger setMiddle = new JoystickButton(this, SET_MIDDLE);
     public Trigger setHigh = new JoystickButton(this, SET_HIGH);    
     public Trigger setStow = new JoystickButton(this, STOW);
-    public Trigger ArmUp = new JoystickButton(this, RIGHTBUMPER);
-    public Trigger ArmDown = new JoystickButton(this, LEFTBUMPER);
+    public Trigger RightBumper = new JoystickButton(this, RIGHTBUMPER);
+    public Trigger LeftBumper = new JoystickButton(this, LEFTBUMPER);
     public Trigger RollerStart = new JoystickButton(this, START);
     public Trigger ReverseRollerStart = new JoystickButton(this, BACK);
     public Trigger UpDpadTrigger = new POVButton(this, 0);
     public Trigger RightDpadTrigger = new POVButton(this, 90);
     public Trigger DownDpadTrigger = new POVButton(this, 180);
     public Trigger LeftDpadTrigger = new POVButton(this, 270);
-    //public Trigger leftTrigger = new Trigger(() -> this.LeftTrigger());
-    //public Trigger RightTrigger = new Trigger(() -> this.RightTrigger());
+    public Trigger LeftTrigger = new JoystickAnalogButton(this, Constants.LEFTTRIGGER);
+    public Trigger RightTrigger = new JoystickAnalogButton(this, Constants.RIGHTTRIGGER);
 
 }

@@ -50,28 +50,13 @@ public class ArmWristCommand extends CommandBase {
         a_arm.setSetpoint(a_angle);
         Arm_Moved = true;
       }
-//      if(counter == 0)
-//        a_arm.setSetpoint(a_angle);
-//        counter ++;
-//      }
-//      System.out.println("arm command Set " + a_angle + ":" + a_arm.getDegrees());
-//     startAngle = a_arm.getDegrees(); 
-//      if(startAngle > a_angle)
-//        a_arm.raise();
-//      else if (startAngle < a_angle)
-//        a_arm.lower();
+
     }
 
     // Make this return true when this Command no longer needs to run execute()
     public boolean isFinished() {
       // Stop once we've moved to or past the end distance
       return a_arm.atSetpoint() && a_Wrist.atSetpoint() && Arm_Moved && Wrist_Moved;
-     /* if (startAngle < a_angle)  
-        return (a_arm.getDegrees() >= a_angle);
-      else if (startAngle > a_angle)
-        return (a_arm.getDegrees() <= a_angle);
-      else return true;  */
-
         
     }
 

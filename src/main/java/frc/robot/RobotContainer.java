@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.util.controllers.ButtonBox;
 import frc.robot.commands.autos.AutoHighR;
-import frc.robot.commands.autos.Drive1Meter;
 import frc.robot.commands.autos.MeterPlace;
 
 import frc.robot.commands.TeleopSwerve;
@@ -30,19 +29,12 @@ import frc.robot.subsystems.Wrist;
  */
 public class RobotContainer {
     SendableChooser<Command> auto_chooser = new SendableChooser<>();
-    //public double accel;
-    //public double accel2;
+
     /* Controllers */
     private final Joystick driver = new Joystick(0);
     private final ButtonBox m_buttonBox = new ButtonBox(1);
 
-    /* Drive Controls */
-    private final int translationAxis = XboxController.Axis.kLeftY.value;
-    private final int strafeAxis = XboxController.Axis.kLeftX.value;
-    private final int rotationAxis = XboxController.Axis.kRightX.value;
-    private final int speedControl = XboxController.Axis.kRightTrigger.value;
     /* Driver Buttons */
-    //private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
 
     /* Subsystems */
@@ -64,11 +56,11 @@ public class RobotContainer {
         s_Swerve.setDefaultCommand(
             new TeleopSwerve(
                 s_Swerve, 
-                () -> -driver.getRawAxis(translationAxis)/1.3, 
-                () -> -driver.getRawAxis(strafeAxis)/1.3, 
-                () -> driver.getRawAxis(rotationAxis)/2/9*13.5,    ///2/9*6.75, 
+                () -> -driver.getRawAxis(Constants.LEFTY)/1.3, 
+                () -> -driver.getRawAxis(Constants.LEFTX)/1.3, 
+                () -> driver.getRawAxis(Constants.RIGHTX)/2/9*13.5,    ///2/9*6.75, 
                 () -> robotCentric.getAsBoolean(), 
-                () -> driver.getRawAxis(speedControl)/1.5,
+                () -> driver.getRawAxis(Constants.RIGHTTRIGGER)/1.5,
                 () -> gyroOffset
             )
         );
@@ -92,8 +84,10 @@ public class RobotContainer {
         /* Driver Buttons */
         //zeroGyro.onTrue(new InstantCommand(() -> this.zeroGyro()));
     // ARM (CONTROL STICK)
-    m_buttonBox.ArmUp.whileTrue(new RunCommand(() -> m_wrist.raise())).onFalse(new InstantCommand(() -> m_arm.stop()));
-    m_buttonBox.ArmDown.whileTrue(new RunCommand(() -> m_wrist.lower())).onFalse(new InstantCommand(() -> m_arm.stop()));
+    m_buttonBox.RightBumper.whileTrue(new RunCommand(() -> m_wrist.raise())).onFalse(new InstantCommand(() -> m_wrist.stop()));
+    m_buttonBox.LeftBumper.whileTrue(new RunCommand(() -> m_wrist.lower())).onFalse(new InstantCommand(() -> m_wrist.stop()));
+    m_buttonBox.RightTrigger.whileTrue(new RunCommand(() -> m_arm.raise())).onFalse(new InstantCommand(() -> m_arm.stop()));
+    m_buttonBox.LeftTrigger.whileTrue(new RunCommand(() -> m_arm.lower())).onFalse(new InstantCommand(() -> m_arm.stop()));
     // SET LOW
     m_buttonBox.setLow.onTrue(new ArmWristCommand(m_arm, Constants.LOW_ARM_ANGLE, m_wrist, Constants.LOW_WRIST_ANGLE));
 
@@ -102,7 +96,8 @@ public class RobotContainer {
 
     // SET HIGH
     m_buttonBox.setHigh.onTrue(new ArmWristCommand(m_arm, Constants.HIGH_ARM_ANGLE, m_wrist, Constants.HIGH_WRIST_ANGLE));
-    
+    //SET SHELF
+    m_buttonBox.RightDpadTrigger.onTrue(m_grabber.startRollersCommand()).onFalse(m_grabber.stopRollersCommand());
     // SET stow
     m_buttonBox.setStow.onTrue(new ArmWristCommand(m_arm, Constants.STOW_ARM_ANGLE, m_wrist, Constants.STOW_WRIST_ANGLE));
     

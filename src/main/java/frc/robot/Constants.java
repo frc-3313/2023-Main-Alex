@@ -147,6 +147,8 @@ public final class Constants {
             new TrapezoidProfile.Constraints(
                 kMaxAngularSpeedRadiansPerSecondB, kMaxAngularSpeedRadiansPerSecondSquaredB);
     }
+      // Drive Train
+      public static final int CHARGE_STATION_LEVEL = 2;
    
     //speeds
         public static final double ARM_SPEED = .075;
@@ -190,4 +192,25 @@ public final class Constants {
         public static final int GRABBER_GRAB = 0;
         public static final int GRABBER_CAN = 0;
         public static final int SHOULDER_ENCODER_ID = 0;
+
+        //Controller button id's
+
+        public static int A = 1;
+        public static int B = 2;
+        public static int X = 3;
+        public static int Y = 4;
+        public static int LEFTBUMPER = 5;
+        public static int RIGHTBUMPER = 6;
+        public static int BACK = 7;
+        public static int START = 8;
+        public static int CLICKRIGHTJOYSTICK = 9;
+        public static int CLICKLEFTJOYSTICK = 10;
+        
+        //Controller Axis id's
+        public static int LEFTX = 0;
+        public static int LEFTY = 1;
+        public static int LEFTTRIGGER = 2;
+        public static int RIGHTTRIGGER = 3;
+        public static int RIGHTX = 4;
+        public static int RIGHTY = 5;
 }

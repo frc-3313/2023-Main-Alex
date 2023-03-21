@@ -20,7 +20,7 @@ public class MeterPlace extends SequentialCommandGroup {
         Command dropPiececommand = new AutoOpenGrabber(s_Grabber, 0.2, m_timer);
 
         Command waitcommand = new WaitCommand(1);
-        Command stopswervecommand = new AutoSpeed(s_Swerve, 0, 0, 0, 0, m_timer, false);
+        //Command stopswervecommand = new AutoSpeed(s_Swerve, 0, 0, 0, 0, m_timer, false);
         Command as1command = new DriveDistanceMetersNew(s_Swerve, 1, .5);
         Command as2command = new DriveDistanceMetersNew(s_Swerve, -1, .5);
 
@@ -32,9 +32,7 @@ public class MeterPlace extends SequentialCommandGroup {
             new WaitCommand(.25),
             dropPiececommand.withTimeout(.5),
             as2command,
-            setArmStow.withTimeout(3),
-            stopswervecommand
-
+            setArmStow.withTimeout(3)
         );
     }
 }
