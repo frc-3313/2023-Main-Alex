@@ -15,10 +15,10 @@ public class ScoreHigh {
         
         return new SequentialCommandGroup(
             new ArmWristCommand(s_Arm, Constants.HIGH_ARM_ANGLE, Constants.AUTO_ARM_SPEED, s_Wrist, Constants.HIGH_WRIST_ANGLE, Constants.AUTO_WRIST_SPEED).withTimeout(3),
-            new DriveDistanceMeters(s_Swerve, 1, .5),
+            new DriveDistanceMeters(s_Swerve, 1, .1),
             new WaitCommand(.25),
             new AutoOpenGrabber(s_Grabber).withTimeout(.5),
-            new DriveDistanceMeters(s_Swerve, -.5, .5),
+            new DriveDistanceMeters(s_Swerve, -.5, .1),
             new ArmWristCommand(s_Arm, Constants.STOW_ARM_ANGLE, Constants.AUTO_ARM_SPEED, s_Wrist, Constants.STOW_WRIST_ANGLE, Constants.AUTO_WRIST_SPEED).withTimeout(0.5)
         );
     }

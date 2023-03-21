@@ -17,16 +17,16 @@ public class BlueLeft2Piece extends SequentialCommandGroup {
 
         Command waitcommand = new WaitCommand(1);
         Command traj1 = new FollowHolonomicTrajectory(s_Swerve, TrajectoryHelper.loadJSONTrajectory("BlueLeft1_Out.wpilib.json"), true);
-        Command traj2 = new FollowHolonomicTrajectory(s_Swerve, TrajectoryHelper.loadJSONTrajectory("BlueLeft1_Back.wpilib.json"), false);
+       Command traj2 = new FollowHolonomicTrajectory(s_Swerve, TrajectoryHelper.loadJSONTrajectory("BlueLeft1_Back.wpilib.json"), false);
 
 
         addCommands(
             new InstantCommand(() -> s_Swerve.zeroGyro()).alongWith(waitcommand),
-            ScoreHigh.ScoreHighCommand(s_Swerve, s_Arm, s_Wrist, s_Grabber),
-            traj1,
-            GroundPickup.GroundPickupCommand(s_Swerve, s_Arm, s_Wrist, s_Grabber),
-            traj2,
             ScoreHigh.ScoreHighCommand(s_Swerve, s_Arm, s_Wrist, s_Grabber)
+            //traj1,
+            //GroundPickup.GroundPickupCommand(s_Swerve, s_Arm, s_Wrist, s_Grabber),
+            //traj2,
+            //ScoreHigh.ScoreHighCommand(s_Swerve, s_Arm, s_Wrist, s_Grabber)
         );
     }
 }

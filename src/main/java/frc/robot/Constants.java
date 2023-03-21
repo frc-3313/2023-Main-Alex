@@ -85,7 +85,8 @@ public final class Constants {
           public static final int driveMotorID = 30;
           public static final int angleMotorID = 31;
           public static final int canCoderID = 20;
-          public static final double angleOffset = 18.896;
+          //public static final double angleOffset = 18.896;
+          public static final double angleOffset = 174.814;
           public static final SwerveModuleConstants constants =
               new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
@@ -141,8 +142,8 @@ public final class Constants {
 
 
     //wrist angles through bore encoder
-    public static final double MIN_WRIST_ANGLE = 75;
-    public static final double STOW_WRIST_ANGLE = 81;
+    public static final double MIN_WRIST_ANGLE = 65;
+    public static final double STOW_WRIST_ANGLE = 75;
     public static final double LOW_WRIST_ANGLE = 131;
     public static final double MID_WRIST_ANGLE = 185;
     public static final double SHELF_WRIST_ANGLE = 190;
