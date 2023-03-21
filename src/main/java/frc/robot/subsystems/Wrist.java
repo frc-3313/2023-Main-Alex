@@ -31,6 +31,7 @@ public class Wrist extends SubsystemBase {
   // Settings
   private boolean usingPID = true;
   private boolean settingMinLevel = true;
+  private double wristSpeed = Constants.MAX_WRIST_SPEED;
 
 
   public Wrist() {
@@ -75,11 +76,16 @@ public class Wrist extends SubsystemBase {
   public double getMinPower() {
     return minPowerAtExtended;
   }
-
+  public void setArmSpeed(double speed){
+    wristSpeed = speed;
+  }
   public double getPidOutput() {
     double speed = pid.calculate(getDegrees(), setpoint) + getFeedForward();
-    if (speed >= Constants.MAX_WRIST_SPEED) {
-      return Constants.MAX_WRIST_SPEED;
+    if (speed >= wristSpeed) {
+      return wristSpeed;
+    }
+    else if (speed <= -wristSpeed) {
+      return -wristSpeed;
     }
     return speed;
   }

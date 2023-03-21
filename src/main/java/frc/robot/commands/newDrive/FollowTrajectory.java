@@ -15,18 +15,18 @@ import frc.robot.subsystems.Swerve;
 public class FollowTrajectory extends CommandBase {
   private Swerve m_drive;
   private Trajectory m_trajectory;
-  private boolean m_resetOdometry;
+  //private boolean m_resetOdometry;
   private RamseteController m_controller = new RamseteController();
   private Timer m_timer = new Timer();
   private double m_duration;
   private int m_state;
 
-  private static boolean forceResetOdometry = false;
-  private static boolean ignoreLocalizationErrors = false;
+  //private static boolean forceResetOdometry = false;
+  //private static boolean ignoreLocalizationErrors = false;
 
   public FollowTrajectory(final Swerve drive, Trajectory trajectory, boolean resetOdometry) {
     m_drive = drive;
-    m_resetOdometry = resetOdometry;
+  //  m_resetOdometry = resetOdometry;
     m_trajectory = trajectory;
     m_duration = m_trajectory.getTotalTimeSeconds();
 
@@ -49,20 +49,20 @@ public class FollowTrajectory extends CommandBase {
 
     switch (m_state) {
       case 0: // Zero drive
-        if (m_resetOdometry || forceResetOdometry) {
-          forceResetOdometry = false;
+       // if (m_resetOdometry || forceResetOdometry) {
+       //   forceResetOdometry = false;
           m_drive.resetTrajectoryPose(m_trajectory.getInitialPose());
           // m_drive.resetOdometry(m_trajectory.getInitialPose(), m_drive.getGyroscopeRotation());
-        } else {
-          if (!ignoreLocalizationErrors && Math.sqrt(Math.pow((m_drive.getPose().getX() - m_trajectory.getInitialPose().getX()), 2) +
-            Math.pow((m_drive.getPose().getY() - m_trajectory.getInitialPose().getY()), 2)) > 3) {
-              System.out.println("Trajectory Error: Distance > 3.");
-              System.out.println("Trajectory Start X: " + m_trajectory.getInitialPose().getX());
-              System.out.println("Trajectory Start Y: " + m_trajectory.getInitialPose().getY());
-              m_state = 3;
-              break;
-            }
-        }
+        //} else {
+        //  if (!ignoreLocalizationErrors && Math.sqrt(Math.pow((m_drive.getPose().getX() - m_trajectory.getInitialPose().getX()), 2) +
+        //    Math.pow((m_drive.getPose().getY() - m_trajectory.getInitialPose().getY()), 2)) > 3) {
+        //      System.out.println("Trajectory Error: Distance > 3.");
+        //      System.out.println("Trajectory Start X: " + m_trajectory.getInitialPose().getX());
+        //      System.out.println("Trajectory Start Y: " + m_trajectory.getInitialPose().getY());
+        //      m_state = 3;
+        //      break;
+        //    }
+        //}
         m_state++;
         break;
       case 1: // reset the timer and go!
@@ -99,8 +99,8 @@ public class FollowTrajectory extends CommandBase {
     return m_state > 2;
   }
 
-  public static void forceResetOdometry() {
-    forceResetOdometry = true;
-    ignoreLocalizationErrors = true;
-  }
+ // public static void forceResetOdometry() {
+ //   forceResetOdometry = true;
+ //   ignoreLocalizationErrors = true;
+ // }
 }

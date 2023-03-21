@@ -2,20 +2,18 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.drive;
+package frc.robot.commands.newDrive;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.SwerveDrive;
-import frc.robot.util.preferenceconstants.DoublePreferenceConstant;
-import frc.robot.util.preferenceconstants.IntPreferenceConstant;
+import frc.robot.subsystems.Swerve;
 
 public class AutoBalanceSimple extends CommandBase {
   /** Creates a new AutoBalanceSimple. */
-  private SwerveDrive m_drive;
+  private Swerve m_drive;
   private Pose2d m_startPose;
   private double m_lastAngle;
   private int m_lockedCounter;
@@ -29,14 +27,14 @@ public class AutoBalanceSimple extends CommandBase {
     new SwerveModuleState(0, Rotation2d.fromDegrees(90))
   };
 
-  private final DoublePreferenceConstant m_rollOffset = new DoublePreferenceConstant("Auto/Balance/Roll Offset", 0.0);
-  private final DoublePreferenceConstant m_levelThreshold = new DoublePreferenceConstant("Auto/Balance/Level Theshold", 4.0);
-  private final DoublePreferenceConstant m_movingThreshold = new DoublePreferenceConstant("Auto/Balance/Moving Theshold", 0.2);
-  private final IntPreferenceConstant m_lockMin = new IntPreferenceConstant("Auto/Balance/Lock Min", 10);
-  private final DoublePreferenceConstant m_climbSpeed = new DoublePreferenceConstant("Auto/Balance/Climb Speed", 0.5);
-  private final DoublePreferenceConstant m_climbMaxDistance = new DoublePreferenceConstant("Auto/Balance/Climb Max", 1.5);
+  private final double m_rollOffset = 0.0;
+  private final double m_levelThreshold = 4.0;
+  private final double m_movingThreshold = 0.2;
+  private final int m_lockMin = 10;
+  private final double m_climbSpeed = 0.5;
+  private final double m_climbMaxDistance = 1.5;
 
-  public AutoBalanceSimple(SwerveDrive drive) {
+  public AutoBalanceSimple(Swerve drive) {
     m_drive = drive;
     addRequirements(m_drive);
   }
@@ -44,7 +42,7 @@ public class AutoBalanceSimple extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_startPose = m_drive.getOdometryPose();
+    m_startPose = m_drive.getPose();
     m_lastAngle = getChargeStationAngle();
   }
 
@@ -60,22 +58,22 @@ public class AutoBalanceSimple extends CommandBase {
 
     if (m_driving) m_driveCounter++;
 
-    if (Math.abs(currentAngle) < m_levelThreshold.getValue()) {
+    if (Math.abs(currentAngle) < m_levelThreshold) {
       // if the angle is level, lock in place
       SmartDashboard.putNumber("Auto:condition", 0);
       m_lockedCounter = 0;
       lock();
-    } else if (Math.abs(deltaAngle) > m_movingThreshold.getValue() && (m_driving && m_driveCounter > 15 || !m_driving)) {
+    } else if (Math.abs(deltaAngle) > m_movingThreshold && (m_driving && m_driveCounter > 15 || !m_driving)) {
       // if the angle is moving, lock in place
       SmartDashboard.putNumber("Auto:condition", 1);
       m_lockedCounter = 0;
       lock();
-    } else if (m_drive.getOdometryPose().getTranslation().getDistance(m_startPose.getTranslation()) > m_climbMaxDistance.getValue() ) {
+    } else if (m_drive.getPose().getTranslation().getDistance(m_startPose.getTranslation()) > m_climbMaxDistance) {
       // if we have driven too far from where we began, lock in place
       SmartDashboard.putNumber("Auto:condition", 2);
       m_lockedCounter = 0;
       lock();
-    } else if (m_lockedCounter< m_lockMin.getValue()) {
+    } else if (m_lockedCounter< m_lockMin) {
       // if we recently locked, stay locked
       m_lockedCounter++;
       lock();
@@ -85,7 +83,7 @@ public class AutoBalanceSimple extends CommandBase {
         m_driving = true;
         m_driveCounter = 0;
       }
-      m_drive.drive(m_climbSpeed.getValue() * Math.signum(currentAngle), 0, 0);
+      m_drive.drive(m_climbSpeed * Math.signum(currentAngle), 0, 0);
     }
 
   }
@@ -101,12 +99,7 @@ public class AutoBalanceSimple extends CommandBase {
   }
 
   private double getChargeStationAngle(){
-    // double yaw = m_drive.getGyroscopeRotation().getDegrees();
-    // double pitch = m_drive.getNavX().getPitch();
-    // double roll = m_drive.getNavX().getRoll();
-    // return (pitch*-Math.cos(Math.toRadians(yaw)))+(roll*Math.sin(Math.toRadians(yaw)));
-    // trying something simple first:
-    return m_drive.getNavX().getRoll() - m_rollOffset.getValue();
+    return m_drive.getRoll() - m_rollOffset;
   }
 
   private void lock() {

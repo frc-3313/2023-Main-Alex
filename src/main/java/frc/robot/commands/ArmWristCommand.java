@@ -1,8 +1,6 @@
 package frc.robot.commands;
 
-//import edu.wpi.first.hal.ThreadsJNI;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Wrist;
 
@@ -12,11 +10,13 @@ public class ArmWristCommand extends CommandBase {
     public Wrist a_Wrist;
     public Arm a_arm;
     public double startAngle;
+    public double a_armSpeed;
+    public double w_wristSpeed;
     public boolean Arm_first;
     public boolean Arm_Moved = false;
     public boolean Wrist_Moved = false;
 
-    public ArmWristCommand(Arm arm, double sAngle, Wrist wrist, double wAngle) {
+    public ArmWristCommand(Arm arm, double sAngle, double armSpeed, Wrist wrist, double wAngle, double wristSpeed) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         addRequirements(arm, wrist);
@@ -24,11 +24,14 @@ public class ArmWristCommand extends CommandBase {
         a_arm = arm;
         a_Wrist = wrist;
         w_angle = wAngle;
+        a_armSpeed = armSpeed;
+        w_wristSpeed = wristSpeed;
 
     }
 
     public void initialize(){
-    //  a_arm.setSetpoint(a_angle);
+    //  arm is going up
+    
       if(a_arm.getDegrees() > a_angle){
         a_arm.setSetpoint(a_angle);
         Arm_first = true;
@@ -42,11 +45,13 @@ public class ArmWristCommand extends CommandBase {
     }
     // Called repeatedly when this Command is scheduled to run
     public void execute() {
-      if(Arm_first && a_arm.atSetpoint()){
+      //if(Arm_first && a_arm.atSetpoint()){
+        if(Arm_first && (a_arm.getDegrees() < 200)){
         a_Wrist.setSetpoint(w_angle);
         Wrist_Moved = true;
       }
-      else if(!Arm_first && a_Wrist.atSetpoint()){
+      //else if(!Arm_first && a_Wrist.atSetpoint()){
+      else if(!Arm_first && (a_Wrist.getDegrees() > 100)){
         a_arm.setSetpoint(a_angle);
         Arm_Moved = true;
       }

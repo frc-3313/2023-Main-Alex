@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.util.controllers.ButtonBox;
-import frc.robot.commands.autos.AutoHighR;
+import frc.robot.commands.autos.Left2Piece;
 import frc.robot.commands.autos.MeterPlace;
 
 import frc.robot.commands.TeleopSwerve;
@@ -46,7 +46,7 @@ public class RobotContainer {
     public double gyroOffset = 0.0;
 
     /* Autos */
-    private final Command auto1 = new AutoHighR(s_Swerve, m_arm, m_wrist, m_grabber, m_timer);
+    private final Command auto1 = new Left2Piece(s_Swerve, m_arm, m_wrist, m_grabber, m_timer);
     private final Command Auto1Meter = new MeterPlace(s_Swerve, m_arm, m_wrist, m_grabber, m_timer);
     private final Command WaitHere = new WaitCommand(1);
 
@@ -89,22 +89,22 @@ public class RobotContainer {
     m_buttonBox.RightTrigger.whileTrue(new RunCommand(() -> m_arm.raise())).onFalse(new InstantCommand(() -> m_arm.stop()));
     m_buttonBox.LeftTrigger.whileTrue(new RunCommand(() -> m_arm.lower())).onFalse(new InstantCommand(() -> m_arm.stop()));
     // SET LOW
-    m_buttonBox.setLow.onTrue(new ArmWristCommand(m_arm, Constants.LOW_ARM_ANGLE, m_wrist, Constants.LOW_WRIST_ANGLE));
+    m_buttonBox.setLow.onTrue(new ArmWristCommand(m_arm, Constants.LOW_ARM_ANGLE, Constants.MAX_ARM_SPEED, m_wrist, Constants.LOW_WRIST_ANGLE, Constants.MAX_WRIST_SPEED));
 
     // SET MID
-    m_buttonBox.setMiddle.onTrue(new ArmWristCommand(m_arm, Constants.MID_ARM_ANGLE, m_wrist, Constants.MID_WRIST_ANGLE));
+    m_buttonBox.setMiddle.onTrue(new ArmWristCommand(m_arm, Constants.MID_ARM_ANGLE, Constants.MAX_ARM_SPEED, m_wrist, Constants.MID_WRIST_ANGLE, Constants.MAX_WRIST_SPEED));
 
     // SET HIGH
-    m_buttonBox.setHigh.onTrue(new ArmWristCommand(m_arm, Constants.HIGH_ARM_ANGLE, m_wrist, Constants.HIGH_WRIST_ANGLE));
+    m_buttonBox.setHigh.onTrue(new ArmWristCommand(m_arm, Constants.HIGH_ARM_ANGLE, Constants.MAX_ARM_SPEED, m_wrist, Constants.HIGH_WRIST_ANGLE, Constants.MAX_WRIST_SPEED));
     //SET SHELF
-    m_buttonBox.RightDpadTrigger.onTrue(m_grabber.startRollersCommand()).onFalse(m_grabber.stopRollersCommand());
+    m_buttonBox.RightDpadTrigger.onTrue(new ArmWristCommand(m_arm, Constants.SHELF_ARM_ANGLE, Constants.MAX_ARM_SPEED, m_wrist, Constants.SHELF_WRIST_ANGLE, Constants.MAX_WRIST_SPEED));
     // SET stow
-    m_buttonBox.setStow.onTrue(new ArmWristCommand(m_arm, Constants.STOW_ARM_ANGLE, m_wrist, Constants.STOW_WRIST_ANGLE));
+    m_buttonBox.setStow.onTrue(new ArmWristCommand(m_arm, Constants.STOW_ARM_ANGLE, Constants.MAX_ARM_SPEED, m_wrist, Constants.STOW_WRIST_ANGLE, Constants.MAX_WRIST_SPEED));
     
 
     //grabber commands  
-    m_buttonBox.grabButton.onTrue(m_grabber.grabPieceFactory());
-    m_buttonBox.dropButton.onTrue(m_grabber.dropPieceFactory());
+    m_buttonBox.LeftJoystick.onTrue(m_grabber.grabPieceFactory());
+    m_buttonBox.RightJoystick.onTrue(m_grabber.dropPieceFactory());
     m_buttonBox.DownDpadTrigger.onTrue(m_grabber.startRollersCommand()).onFalse(m_grabber.stopRollersCommand());
     m_buttonBox.UpDpadTrigger.onTrue(m_grabber.startRollersReverseCommand()).onFalse(m_grabber.stopRollersCommand());
 

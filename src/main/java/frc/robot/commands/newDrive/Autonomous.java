@@ -10,7 +10,8 @@
  import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
  import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
  import edu.wpi.first.wpilibj2.command.WaitCommand;
- import frc.robot.commands.newDrive.AutoBalanceSimple;
+ //import frc.robot.commands.newDrive.AutoBalanceSimple;
+ import frc.robot.commands.autos.AutoOpenGrabber;
  import frc.robot.commands.drive.DriveDistanceMeters;
  import frc.robot.commands.drive.FollowTrajectory;
  import frc.robot.commands.ArmWristCommand;
@@ -154,32 +155,35 @@
      }
 
      private static SequentialCommandGroup initialScoreHigh(Swerve drive, Arm arm, Wrist wrist, Grabber grabber) {
-         return new SequentialCommandGroup(
-             new ArmWristCommand(arm, Constants.HIGH_ARM_ANGLE, wrist, Constants.HIGH_WRIST_ANGLE).withTimeout(0.5),
-             new DriveDistanceMeters(drive, .5, .5),
-             grabber.dropPieceFactory().withTimeout(0.25),
+
+        return new SequentialCommandGroup(
+             new ArmWristCommand(arm, Constants.HIGH_ARM_ANGLE, Constants.AUTO_ARM_SPEED, wrist, Constants.HIGH_WRIST_ANGLE, Constants.AUTO_WRIST_SPEED).withTimeout(3),
+             new DriveDistanceMeters(drive, 1, .5),
+             new WaitCommand(.25),
+             new AutoOpenGrabber(grabber).withTimeout(.5),
              new DriveDistanceMeters(drive, -.5, .5),
-             new ArmWristCommand(arm, Constants.STOW_ARM_ANGLE, wrist, Constants.STOW_WRIST_ANGLE).withTimeout(0.5)
+             new ArmWristCommand(arm, Constants.STOW_ARM_ANGLE, Constants.AUTO_ARM_SPEED, wrist, Constants.STOW_WRIST_ANGLE, Constants.AUTO_WRIST_SPEED).withTimeout(0.5)
          );
      }
 
      private static SequentialCommandGroup initialScoreMid(Swerve drive, Arm arm, Wrist wrist, Grabber grabber) {
          return new SequentialCommandGroup(
-            new ArmWristCommand(arm, Constants.MID_ARM_ANGLE, wrist, Constants.MID_WRIST_ANGLE).withTimeout(0.5),
-            new DriveDistanceMeters(drive, .25, .5),
+            new ArmWristCommand(arm, Constants.MID_ARM_ANGLE, Constants.AUTO_ARM_SPEED, wrist, Constants.MID_WRIST_ANGLE, Constants.AUTO_WRIST_SPEED).withTimeout(0.5),
+            new DriveDistanceMeters(drive, .75, .5),
+            new WaitCommand(.25),
             grabber.dropPieceFactory().withTimeout(0.25),
-            new DriveDistanceMeters(drive, -.25, .5),
-            new ArmWristCommand(arm, Constants.STOW_ARM_ANGLE, wrist, Constants.STOW_WRIST_ANGLE).withTimeout(0.5)
+            new DriveDistanceMeters(drive, -.75, .5),
+            new ArmWristCommand(arm, Constants.STOW_ARM_ANGLE, Constants.AUTO_ARM_SPEED, wrist, Constants.STOW_WRIST_ANGLE, Constants.AUTO_WRIST_SPEED).withTimeout(0.5)
          );
      }
      private static SequentialCommandGroup PickupGround(Swerve drive, Arm arm, Wrist wrist, Grabber grabber) {
         return new SequentialCommandGroup(
-            new ArmWristCommand(arm, Constants.LOW_ARM_ANGLE, wrist, Constants.LOW_WRIST_ANGLE).withTimeout(0.5),
-            new DriveDistanceMeters(drive, .25, .5),
+            new ArmWristCommand(arm, Constants.LOW_ARM_ANGLE, Constants.AUTO_ARM_SPEED, wrist, Constants.LOW_WRIST_ANGLE, Constants.AUTO_WRIST_SPEED).withTimeout(0.5),
             grabber.startRollersCommand().withTimeout(.25),
-            grabber.grabPieceFactory().withTimeout(0.25),
-            grabber.stopRollersCommand().withTimeout(.25),
-            new ArmWristCommand(arm, Constants.STOW_ARM_ANGLE, wrist, Constants.STOW_WRIST_ANGLE).withTimeout(0.5)
+            new DriveDistanceMeters(drive, .25, .5),
+            grabber.grabPieceFactory().withTimeout(0.5),
+            grabber.stopRollersCommand().withTimeout(.1),
+            new ArmWristCommand(arm, Constants.STOW_ARM_ANGLE, Constants.AUTO_ARM_SPEED, wrist, Constants.STOW_WRIST_ANGLE, Constants.AUTO_WRIST_SPEED).withTimeout(0.5)
         );
     }
  }

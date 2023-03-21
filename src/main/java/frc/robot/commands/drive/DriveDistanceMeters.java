@@ -5,10 +5,9 @@
 package frc.robot.commands.drive;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Swerve;
-import edu.wpi.first.math.geometry.Translation2d;
-
 
 public class DriveDistanceMeters extends CommandBase {
   private Swerve m_drive;
@@ -27,21 +26,17 @@ public class DriveDistanceMeters extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("Running DriveDistanceMeters command");
     startPose = m_drive.getPose();
+    if (distanceMeters < 0.0 ) {
+      translationVelocityMetersPerSecond *= -1.0;
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (distanceMeters < 0.0 ) {
-      translationVelocityMetersPerSecond *= -1.0;
-    }
-    m_drive.drive(
-            new Translation2d(translationVelocityMetersPerSecond, 0), 
-            0, 
-            !false, 
-            true);
+    
+    m_drive.drive(new Translation2d(this.translationVelocityMetersPerSecond, 0.0), 0.0,false, false);
   }
 
   // Called once the command ends or is interrupted.
@@ -55,7 +50,6 @@ public class DriveDistanceMeters extends CommandBase {
   public boolean isFinished() {
     Pose2d currentPose = m_drive.getPose();
     Pose2d relativePose = currentPose.relativeTo(startPose);
-    System.out.println("Distance: " + relativePose.getX());
     boolean shouldStop = false;
     if (distanceMeters >= 0.0 ) {
         shouldStop = relativePose.getX() > distanceMeters;

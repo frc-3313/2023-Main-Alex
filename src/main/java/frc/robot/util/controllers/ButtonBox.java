@@ -9,8 +9,6 @@ import frc.robot.Constants;
 
 public class ButtonBox extends Joystick {
 	
-    private static int GRAB = 9;
-    private static int DROP = 10;
     private static int SET_LOW = 1;
     private static int SET_MIDDLE = 2;
     private static int SET_HIGH = 4;
@@ -59,8 +57,8 @@ public class ButtonBox extends Joystick {
   //public boolean RightTrigger() {
 	//	return this.RightTrigger();
 	//}
-	  public Trigger grabButton = new JoystickButton(this, GRAB);
-    public Trigger dropButton = new JoystickButton(this, DROP);
+	  public Trigger RightJoystick = new JoystickButton(this, Constants.CLICKRIGHTJOYSTICK);
+    public Trigger LeftJoystick = new JoystickButton(this, Constants.CLICKLEFTJOYSTICK);
     public Trigger setLow = new JoystickButton(this, SET_LOW);
     public Trigger setMiddle = new JoystickButton(this, SET_MIDDLE);
     public Trigger setHigh = new JoystickButton(this, SET_HIGH);    
