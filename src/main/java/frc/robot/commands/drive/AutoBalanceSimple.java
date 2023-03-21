@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.newDrive;
+package frc.robot.commands.drive;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -19,6 +19,7 @@ public class AutoBalanceSimple extends CommandBase {
   private int m_lockedCounter;
   private int m_driveCounter;
   private boolean m_driving= false;
+  private double m_climbSpeed;
 
   private final SwerveModuleState [] LOCK_STATES = { 
     new SwerveModuleState(0, Rotation2d.fromDegrees(90)),
@@ -27,12 +28,12 @@ public class AutoBalanceSimple extends CommandBase {
     new SwerveModuleState(0, Rotation2d.fromDegrees(90))
   };
 
-  private final double m_rollOffset = 0.0;
-  private final double m_levelThreshold = 4.0;
-  private final double m_movingThreshold = 0.2;
-  private final int m_lockMin = 10;
-  private final double m_climbSpeed = 0.5;
-  private final double m_climbMaxDistance = 1.5;
+  private final double p_rollOffset = 0.0;
+  private final double p_levelThreshold = 4.0;
+  private final double p_movingThreshold = 0.2;
+  private final int p_lockMin = 10;
+  private final double p_initialClimbSpeed = 0.5;
+  private final double p_climbMaxDistance = 1.5;
 
   public AutoBalanceSimple(Swerve drive) {
     m_drive = drive;
@@ -44,6 +45,7 @@ public class AutoBalanceSimple extends CommandBase {
   public void initialize() {
     m_startPose = m_drive.getPose();
     m_lastAngle = getChargeStationAngle();
+    m_climbSpeed = p_initialClimbSpeed;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -55,35 +57,41 @@ public class AutoBalanceSimple extends CommandBase {
     
     SmartDashboard.putNumber("Auto:currentAngle", currentAngle);
     SmartDashboard.putNumber("Auto:deltaAngle", deltaAngle);
+    SmartDashboard.putNumber("Auto:climbSpeed", m_climbSpeed);
 
     if (m_driving) m_driveCounter++;
 
-    if (Math.abs(currentAngle) < m_levelThreshold) {
+    if (Math.abs(currentAngle) < p_levelThreshold) {
       // if the angle is level, lock in place
       SmartDashboard.putNumber("Auto:condition", 0);
       m_lockedCounter = 0;
       lock();
-    } else if (Math.abs(deltaAngle) > m_movingThreshold && (m_driving && m_driveCounter > 15 || !m_driving)) {
+    } else if (Math.abs(deltaAngle) > p_movingThreshold && (m_driving && m_driveCounter > 15 || !m_driving)) {
       // if the angle is moving, lock in place
       SmartDashboard.putNumber("Auto:condition", 1);
       m_lockedCounter = 0;
       lock();
-    } else if (m_drive.getPose().getTranslation().getDistance(m_startPose.getTranslation()) > m_climbMaxDistance) {
+    } else if (m_drive.getPose().getTranslation().getDistance(m_startPose.getTranslation()) > p_climbMaxDistance) {
       // if we have driven too far from where we began, lock in place
       SmartDashboard.putNumber("Auto:condition", 2);
       m_lockedCounter = 0;
       lock();
-    } else if (m_lockedCounter< m_lockMin) {
+    } else if (m_lockedCounter< p_lockMin) {
       // if we recently locked, stay locked
       m_lockedCounter++;
       lock();
     } else {
       // drive up
+      m_drive.drive(m_climbSpeed * Math.signum(currentAngle), 0, 0);
       if (!m_driving) {
         m_driving = true;
         m_driveCounter = 0;
+        m_climbSpeed = m_climbSpeed / 2.00;
+
+        if (m_climbSpeed <= 0.5) {
+          m_climbSpeed = 0.5;
+        }
       }
-      m_drive.drive(m_climbSpeed * Math.signum(currentAngle), 0, 0);
     }
 
   }
@@ -99,7 +107,12 @@ public class AutoBalanceSimple extends CommandBase {
   }
 
   private double getChargeStationAngle(){
-    return m_drive.getRoll() - m_rollOffset;
+    // double yaw = m_drive.getGyroscopeRotation().getDegrees();
+    // double pitch = m_drive.getNavX().getPitch();
+    // double roll = m_drive.getNavX().getRoll();
+    // return (pitch*-Math.cos(Math.toRadians(yaw)))+(roll*Math.sin(Math.toRadians(yaw)));
+    // trying something simple first:
+    return m_drive.getRoll() - p_rollOffset;
   }
 
   private void lock() {

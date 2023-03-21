@@ -125,7 +125,6 @@ public final class Constants {
     public static final int CHARGE_STATION_LEVEL = 2;
 
 //speeds
-    public static final double ARM_SPEED = .075;
     public static final double MAX_ARM_SPEED = .3;
     public static final double MAX_WRIST_SPEED = .6;
     public static final double AUTO_ARM_SPEED = .5;

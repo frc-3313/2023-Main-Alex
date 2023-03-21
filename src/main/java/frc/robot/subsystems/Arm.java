@@ -47,7 +47,7 @@ public class Arm extends SubsystemBase {
       double tempSetpoint = setpoint -= setpointIncrementer;
       setSetpoint(tempSetpoint);
     } else {
-      motorOutput = Constants.ARM_SPEED;
+      motorOutput = Constants.MAX_ARM_SPEED;
     }
   }
 
@@ -56,7 +56,7 @@ public class Arm extends SubsystemBase {
       double tempSetpoint = setpoint += setpointIncrementer;
       setSetpoint(tempSetpoint);
     } else {
-      motorOutput = -Constants.ARM_SPEED;
+      motorOutput = -Constants.MAX_ARM_SPEED;
     }
   }
 

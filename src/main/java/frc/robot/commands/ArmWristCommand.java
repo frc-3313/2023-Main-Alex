@@ -31,7 +31,8 @@ public class ArmWristCommand extends CommandBase {
 
     public void initialize(){
     //  arm is going up
-    
+      a_arm.setArmSpeed(a_armSpeed);
+      a_Wrist.setWristSpeed(w_wristSpeed);
       if(a_arm.getDegrees() > a_angle){
         a_arm.setSetpoint(a_angle);
         Arm_first = true;

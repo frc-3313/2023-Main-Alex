@@ -11,10 +11,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.util.controllers.ButtonBox;
-import frc.robot.commands.autos.Left2Piece;
-import frc.robot.commands.autos.MeterPlace;
-
 import frc.robot.commands.TeleopSwerve;
+import frc.robot.commands.drive.autos.BlueCenterBalance;
+import frc.robot.commands.drive.autos.BlueLeft2Piece;
+import frc.robot.commands.drive.autos.BlueRight2Piece;
+import frc.robot.commands.drive.autos.MeterPlace;
 import frc.robot.commands.ArmWristCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Grabber;
@@ -46,7 +47,9 @@ public class RobotContainer {
     public double gyroOffset = 0.0;
 
     /* Autos */
-    private final Command auto1 = new Left2Piece(s_Swerve, m_arm, m_wrist, m_grabber, m_timer);
+    private final Command auto1 = new BlueLeft2Piece(s_Swerve, m_arm, m_wrist, m_grabber, m_timer);
+    private final Command auto2 = new BlueRight2Piece(s_Swerve, m_arm, m_wrist, m_grabber, m_timer);
+    private final Command auto3 = new BlueCenterBalance(s_Swerve, m_arm, m_wrist, m_grabber);
     private final Command Auto1Meter = new MeterPlace(s_Swerve, m_arm, m_wrist, m_grabber, m_timer);
     private final Command WaitHere = new WaitCommand(1);
 
@@ -69,8 +72,11 @@ public class RobotContainer {
         configureButtonBindings();
 
         auto_chooser.setDefaultOption("Do Nothing", WaitHere);
-        auto_chooser.addOption("Drive 1 Meter", Auto1Meter);
-        auto_chooser.addOption("One Piece High and back", auto1);
+        
+        auto_chooser.addOption("Two Piece Left", auto1);
+        auto_chooser.addOption("One Piece High and back", auto2);
+        auto_chooser.addOption("One Piece Center", auto3);
+        auto_chooser.setDefaultOption("Drive 1 Meter", Auto1Meter);
 
     }
 
@@ -123,7 +129,7 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
         //return auto1;
-        //return auto_chooser.getSelected();
-        return Auto1Meter;
+        return auto_chooser.getSelected();
+        //return Auto1Meter;
     }
 }

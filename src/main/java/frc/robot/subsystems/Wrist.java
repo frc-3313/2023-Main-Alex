@@ -76,7 +76,7 @@ public class Wrist extends SubsystemBase {
   public double getMinPower() {
     return minPowerAtExtended;
   }
-  public void setArmSpeed(double speed){
+  public void setWristSpeed(double speed){
     wristSpeed = speed;
   }
   public double getPidOutput() {

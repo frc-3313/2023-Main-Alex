@@ -2,12 +2,10 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.newDrive;
+package frc.robot.commands.drive;
 
 import edu.wpi.first.math.geometry.Pose2d;
-//import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-//import edu.wpi.first.math.trajectory.constraint.MaxVelocityConstraint;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
@@ -24,7 +22,6 @@ public class AutoBalance extends CommandBase {
   private static double maxDistance = .5;
 
   private static int m_state;
-  //private static boolean m_reverse = false;
   /** Creates a new AutoBalance. */
   public AutoBalance(Swerve drive) {
     // Use addRequirements() here to declare subsystem dependencies.

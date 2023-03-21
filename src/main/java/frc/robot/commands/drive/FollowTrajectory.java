@@ -11,21 +11,22 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.math.trajectory.Trajectory;
 import frc.robot.subsystems.Swerve;
-import edu.wpi.first.math.geometry.Translation2d;
-
 
 public class FollowTrajectory extends CommandBase {
   private Swerve m_drive;
   private Trajectory m_trajectory;
-  private boolean m_resetOdometry;
-  private RamseteController m_controller = new RamseteController(1.5, 0.7);
+  //private boolean m_resetOdometry;
+  private RamseteController m_controller = new RamseteController();
   private Timer m_timer = new Timer();
   private double m_duration;
   private int m_state;
 
+  //private static boolean forceResetOdometry = false;
+  //private static boolean ignoreLocalizationErrors = false;
+
   public FollowTrajectory(final Swerve drive, Trajectory trajectory, boolean resetOdometry) {
     m_drive = drive;
-    m_resetOdometry = resetOdometry;
+  //  m_resetOdometry = resetOdometry;
     m_trajectory = trajectory;
     m_duration = m_trajectory.getTotalTimeSeconds();
 
@@ -48,15 +49,20 @@ public class FollowTrajectory extends CommandBase {
 
     switch (m_state) {
       case 0: // Zero drive
-        if (m_resetOdometry) {
-          m_drive.resetOdometry(m_trajectory.getInitialPose());   
-        } else {
-          if (Math.sqrt(Math.pow((m_drive.getPose().getX() - m_trajectory.getInitialPose().getX()), 2) +
-            Math.pow((m_drive.getPose().getY() - m_trajectory.getInitialPose().getY()), 2)) > .25) {
-              m_state = 3;
-              break;
-            }
-        }
+       // if (m_resetOdometry || forceResetOdometry) {
+       //   forceResetOdometry = false;
+          m_drive.resetTrajectoryPose(m_trajectory.getInitialPose());
+          // m_drive.resetOdometry(m_trajectory.getInitialPose(), m_drive.getGyroscopeRotation());
+        //} else {
+        //  if (!ignoreLocalizationErrors && Math.sqrt(Math.pow((m_drive.getPose().getX() - m_trajectory.getInitialPose().getX()), 2) +
+        //    Math.pow((m_drive.getPose().getY() - m_trajectory.getInitialPose().getY()), 2)) > 3) {
+        //      System.out.println("Trajectory Error: Distance > 3.");
+        //      System.out.println("Trajectory Start X: " + m_trajectory.getInitialPose().getX());
+        //      System.out.println("Trajectory Start Y: " + m_trajectory.getInitialPose().getY());
+        //      m_state = 3;
+        //      break;
+        //    }
+        //}
         m_state++;
         break;
       case 1: // reset the timer and go!
@@ -67,7 +73,8 @@ public class FollowTrajectory extends CommandBase {
         if (m_timer.get() < m_duration) {
           double now = m_timer.get();
           Trajectory.State goal = m_trajectory.sample(now);
-          targetSpeeds = m_controller.calculate(m_drive.getPose(), goal);
+          targetSpeeds = m_controller.calculate(m_drive.getTrajectoryOdometryPose(), goal);
+          // targetSpeeds = m_controller.calculate(m_drive.getOdometryPose(), goal);
         } else {
           m_state++;
         }
@@ -77,11 +84,7 @@ public class FollowTrajectory extends CommandBase {
         break;
     }
 
-    m_drive.drive(new Translation2d(targetSpeeds.vxMetersPerSecond, targetSpeeds.vyMetersPerSecond), 
-    targetSpeeds.omegaRadiansPerSecond, 
-    !false, 
-    true);
-
+    m_drive.drive(targetSpeeds);
   }
 
   // Called once the command ends or is interrupted.
@@ -95,4 +98,9 @@ public class FollowTrajectory extends CommandBase {
   public boolean isFinished() {
     return m_state > 2;
   }
+
+ // public static void forceResetOdometry() {
+ //   forceResetOdometry = true;
+ //   ignoreLocalizationErrors = true;
+ // }
 }
