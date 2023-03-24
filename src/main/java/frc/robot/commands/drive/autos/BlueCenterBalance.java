@@ -8,17 +8,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.util.TrajectoryHelper;
-import frc.robot.commands.drive.FollowHolonomicTrajectory;
-import frc.robot.commands.drive.AutoBalanceSimple;
+//import frc.robot.commands.drive.AutoBalanceSimple;
 
 public class BlueCenterBalance extends SequentialCommandGroup {
     public BlueCenterBalance(Swerve s_Swerve, Arm s_Arm, Wrist s_Wrist, Grabber s_Grabber){
         //Command dropPiececommand = new AutoOpenGrabber(s_Grabber);
 
         Command waitcommand = new WaitCommand(1);
-//        Command traj1 = new FollowHolonomicTrajectory(s_Swerve, TrajectoryHelper.loadJSONTrajectory("BlueChargeGrid5ToPiece3.wpilib.json"), true);
-//        Command traj2 = new FollowHolonomicTrajectory(s_Swerve, TrajectoryHelper.loadJSONTrajectory("BlueRight1_Back.wpilib.json"), false);
 
 
         addCommands(

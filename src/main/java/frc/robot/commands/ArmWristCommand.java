@@ -47,12 +47,12 @@ public class ArmWristCommand extends CommandBase {
     // Called repeatedly when this Command is scheduled to run
     public void execute() {
       //if(Arm_first && a_arm.atSetpoint()){
-        if(Arm_first && (a_arm.getDegrees() < 160)){
+      if(Arm_first && ((a_arm.getDegrees() < 160) || a_arm.atSetpoint())){
         a_Wrist.setSetpoint(w_angle);
         Wrist_Moved = true;
       }
       //else if(!Arm_first && a_Wrist.atSetpoint()){
-      else if(!Arm_first && (a_Wrist.getDegrees() > 100)){
+      else if(!Arm_first && ((a_Wrist.getDegrees() > 100) || a_Wrist.atSetpoint())){
         a_arm.setSetpoint(a_angle);
         Arm_Moved = true;
       }

@@ -9,22 +9,32 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.util.TrajectoryHelper;
-import frc.robot.commands.drive.FollowHolonomicTrajectory;
+import frc.robot.commands.drive.Strafe;
+import frc.robot.commands.drive.DriveDistanceMeters;
 
-public class BlueRight2Piece extends SequentialCommandGroup {
-    public BlueRight2Piece(Swerve s_Swerve, Arm s_Arm, Wrist s_Wrist, Grabber s_Grabber,Timer m_timer){
+public class Autoleftred extends SequentialCommandGroup {
+    public Autoleftred(Swerve s_Swerve, Arm s_Arm, Wrist s_Wrist, Grabber s_Grabber,Timer m_timer){
 
         //Command dropPiececommand = new AutoOpenGrabber(s_Grabber);
 
         Command waitcommand = new WaitCommand(1);
-        //Command traj1 = new FollowHolonomicTrajectory(s_Swerve, TrajectoryHelper.loadJSONTrajectory("BlueRight1_Out.wpilib.json"), true);
-        //Command traj2 = new FollowHolonomicTrajectory(s_Swerve, TrajectoryHelper.loadJSONTrajectory("BlueRight1_Back.wpilib.json"), false);
+        Command strafe = new Strafe(s_Swerve, .2, .5);
+        Command driveback = new DriveDistanceMeters(s_Swerve, -3.5, .7);
+        Command driveback2 = new DriveDistanceMeters(s_Swerve, -.1, .1);
+        Command waitcommand2 = new WaitCommand(.5);
+        Command waitcommand3 = new WaitCommand(.5);
+        Command waitcommand4 = new WaitCommand(.2);
 
 
         addCommands(
             new InstantCommand(() -> s_Swerve.zeroGyro()).alongWith(waitcommand),
-            ScoreHigh.ScoreHighCommand(s_Swerve, s_Arm, s_Wrist, s_Grabber)
+            ScoreHigh.ScoreHighCommand(s_Swerve, s_Arm, s_Wrist, s_Grabber),
+            waitcommand2,
+            strafe,
+            waitcommand3,
+            driveback2,
+            waitcommand4,
+            driveback
         //    traj1,
         //    GroundPickup.GroundPickupCommand(s_Swerve, s_Arm, s_Wrist, s_Grabber),
         //    traj2,

@@ -65,8 +65,8 @@ public final class Constants {
         public static final double angleConversionFactor = 360.0 / angleGearRatio;
 
         /* Swerve Profiling Values */
-        public static final double maxSpeed = .5; // meters per second
-        public static final double maxAngularVelocity = .5;
+        public static final double maxSpeed = 1.1; // meters per second
+        public static final double maxAngularVelocity = .9;//both were .5, .75
 
         /* Neutral Modes */
         public static final IdleMode angleNeutralMode = IdleMode.kBrake;
@@ -86,7 +86,7 @@ public final class Constants {
           public static final int angleMotorID = 31;
           public static final int canCoderID = 20;
           //public static final double angleOffset = 18.896;
-          public static final double angleOffset = 174.814;
+          public static final double angleOffset = 241.084;
           public static final SwerveModuleConstants constants =
               new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
@@ -136,7 +136,7 @@ public final class Constants {
     public static final double STOW_ARM_ANGLE = 250;
     public static final double LOW_ARM_ANGLE = 233;
     public static final double MID_ARM_ANGLE = 145;
-    public static final double SHELF_ARM_ANGLE = 133;
+    public static final double SHELF_ARM_ANGLE = 142;
     public static final double HIGH_ARM_ANGLE = 127;
     public static final double MIN_ARM_ANGLE = 122;
 
@@ -144,10 +144,10 @@ public final class Constants {
     //wrist angles through bore encoder
     public static final double MIN_WRIST_ANGLE = 65;
     public static final double STOW_WRIST_ANGLE = 75;
-    public static final double LOW_WRIST_ANGLE = 131;
+    public static final double LOW_WRIST_ANGLE = 127;
     public static final double MID_WRIST_ANGLE = 185;
-    public static final double SHELF_WRIST_ANGLE = 190;
-    public static final double HIGH_WRIST_ANGLE = 193;
+    public static final double SHELF_WRIST_ANGLE = 185;
+    public static final double HIGH_WRIST_ANGLE = 190;
     public static final double MAX_WRIST_ANGLE = 200;
     // Trajectory
     public static final double MAX_TRAJ_VELOCITY = 4;

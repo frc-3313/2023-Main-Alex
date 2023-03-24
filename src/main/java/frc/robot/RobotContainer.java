@@ -5,17 +5,16 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.util.controllers.ButtonBox;
 import frc.robot.commands.TeleopSwerve;
-import frc.robot.commands.drive.autos.BlueCenterBalance;
-import frc.robot.commands.drive.autos.BlueLeft2Piece;
-import frc.robot.commands.drive.autos.BlueRight2Piece;
-import frc.robot.commands.drive.autos.MeterPlace;
+import frc.robot.commands.drive.autos.Autocone3;
+import frc.robot.commands.drive.autos.Autoleftred;
+import frc.robot.commands.drive.autos.AutoBlueRight;
 import frc.robot.commands.ArmWristCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Grabber;
@@ -47,11 +46,9 @@ public class RobotContainer {
     public double gyroOffset = 0.0;
 
     /* Autos */
-    private final Command auto1 = new BlueLeft2Piece(s_Swerve, m_arm, m_wrist, m_grabber, m_timer);
-    private final Command auto2 = new BlueRight2Piece(s_Swerve, m_arm, m_wrist, m_grabber, m_timer);
-    private final Command auto3 = new BlueCenterBalance(s_Swerve, m_arm, m_wrist, m_grabber);
-    private final Command Auto1Meter = new MeterPlace(s_Swerve, m_arm, m_wrist, m_grabber, m_timer);
-    private final Command WaitHere = new WaitCommand(1);
+    private final Command auto1 = new Autocone3(s_Swerve, m_arm, m_wrist, m_grabber, m_timer);
+    private final Command auto2 = new Autoleftred(s_Swerve, m_arm, m_wrist, m_grabber, m_timer);
+    private final Command auto3 = new AutoBlueRight(s_Swerve, m_arm, m_wrist, m_grabber, m_timer);
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {     
@@ -71,12 +68,11 @@ public class RobotContainer {
         // Configure the button bindings
         configureButtonBindings();
 
-        auto_chooser.setDefaultOption("Do Nothing", WaitHere);
         
-        auto_chooser.addOption("Two Piece Left", auto1);
-        auto_chooser.addOption("One Piece High and back", auto2);
-        auto_chooser.addOption("One Piece Center", auto3);
-        auto_chooser.setDefaultOption("Drive 1 Meter", Auto1Meter);
+        auto_chooser.setDefaultOption("Middle field", auto1);
+        auto_chooser.addOption("edge Red", auto2);
+        auto_chooser.addOption("edge Blue", auto3);
+        SmartDashboard.putData(auto_chooser);
 
     }
 
@@ -130,6 +126,6 @@ public class RobotContainer {
         // An ExampleCommand will run in autonomous
         //return auto1;
         return auto_chooser.getSelected();
-        //return Auto1Meter;
+        //return auto1;
     }
 }
