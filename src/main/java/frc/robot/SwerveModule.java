@@ -140,6 +140,8 @@ public class SwerveModule {
         mDriveMotor.restoreFactoryDefaults();
         CANSparkMaxUtil.setCANSparkMaxBusUsage(mDriveMotor, Usage.kAll);
         mDriveMotor.setSmartCurrentLimit(Constants.Swerve.driveContinuousCurrentLimit);
+        mDriveMotor.setOpenLoopRampRate(Constants.Swerve.maxAccelarationDrive);
+        mDriveMotor.setClosedLoopRampRate(Constants.Swerve.maxAccelarationDrive);
         mDriveMotor.setInverted(Constants.Swerve.driveInvert);
         mDriveMotor.setIdleMode(Constants.Swerve.driveNeutralMode);
         driveEncoder.setVelocityConversionFactor(Constants.Swerve.driveConversionVelocityFactor);

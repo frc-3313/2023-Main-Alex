@@ -19,7 +19,7 @@ public class AutoBlueRight extends SequentialCommandGroup {
 
         Command waitcommand = new WaitCommand(1);
         Command strafe = new Strafe(s_Swerve, -.2, .5);
-        Command driveback = new DriveDistanceMeters(s_Swerve, -3.5, .7);
+        Command driveback = new DriveDistanceMeters(s_Swerve, -4, .7);
         Command driveback2 = new DriveDistanceMeters(s_Swerve, -.1, .1);
         Command waitcommand2 = new WaitCommand(.5);
         Command waitcommand3 = new WaitCommand(.5);

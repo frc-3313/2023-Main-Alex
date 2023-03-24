@@ -39,7 +39,7 @@ public final class Constants {
 
         /* Swerve Current Limiting */
         public static final int angleContinuousCurrentLimit = 20;
-        public static final int driveContinuousCurrentLimit = 40;
+        public static final int driveContinuousCurrentLimit = 50;
 
         /* Angle Motor PID Values */
         public static final double angleKP = 0.01;
@@ -65,8 +65,9 @@ public final class Constants {
         public static final double angleConversionFactor = 360.0 / angleGearRatio;
 
         /* Swerve Profiling Values */
-        public static final double maxSpeed = 1.1; // meters per second
+        public static final double maxSpeed = 1.75; // meters per second
         public static final double maxAngularVelocity = .9;//both were .5, .75
+        public static final double maxAccelarationDrive = 1;//time in seconds
 
         /* Neutral Modes */
         public static final IdleMode angleNeutralMode = IdleMode.kBrake;
@@ -134,7 +135,7 @@ public final class Constants {
 //Arm angles
     public static final double MAX_ARM_ANGLE = 255;
     public static final double STOW_ARM_ANGLE = 250;
-    public static final double LOW_ARM_ANGLE = 233;
+    public static final double LOW_ARM_ANGLE = 230;
     public static final double MID_ARM_ANGLE = 145;
     public static final double SHELF_ARM_ANGLE = 142;
     public static final double HIGH_ARM_ANGLE = 127;
@@ -144,7 +145,7 @@ public final class Constants {
     //wrist angles through bore encoder
     public static final double MIN_WRIST_ANGLE = 65;
     public static final double STOW_WRIST_ANGLE = 75;
-    public static final double LOW_WRIST_ANGLE = 127;
+    public static final double LOW_WRIST_ANGLE = 118;
     public static final double MID_WRIST_ANGLE = 185;
     public static final double SHELF_WRIST_ANGLE = 185;
     public static final double HIGH_WRIST_ANGLE = 190;
