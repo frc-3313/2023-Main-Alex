@@ -7,26 +7,26 @@ package frc.robot.commands.drive;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.math.trajectory.Trajectory;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Swerve;
+import frc.robot.util.TrajectoryHelper;
 
-public class FollowTrajectory extends CommandBase {
-  private Drivetrain m_drive;
+public class GoToPose extends CommandBase {
+  private Swerve m_drive;
+  private Pose2d m_targetPose;
   private Trajectory m_trajectory;
-  //private boolean m_resetOdometry;
   private RamseteController m_controller = new RamseteController();
   private Timer m_timer = new Timer();
   private double m_duration;
   private int m_state;
 
-  public FollowTrajectory(final Drivetrain drive, Trajectory trajectory, boolean resetOdometry) {
-
+  public GoToPose(final Swerve drive, Pose2d targetPose) {
     m_drive = drive;
-  //  m_resetOdometry = resetOdometry;
-    m_trajectory = trajectory;
-    m_duration = m_trajectory.getTotalTimeSeconds();
+    m_targetPose = targetPose;
+    
 
     addRequirements(m_drive);
   }
@@ -34,6 +34,8 @@ public class FollowTrajectory extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    m_trajectory = TrajectoryHelper.generateTrajectoryToPose(m_drive.getPose(), m_targetPose);
+    m_duration = m_trajectory.getTotalTimeSeconds();
     m_state = 0;
     SmartDashboard.putNumber("Auto State", m_state);
     m_timer.reset();
@@ -46,21 +48,12 @@ public class FollowTrajectory extends CommandBase {
     ChassisSpeeds targetSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
     switch (m_state) {
-      case 0: // Zero drive
-       // if (m_resetOdometry || forceResetOdometry) {
-       //   forceResetOdometry = false;
-          m_drive.resetTrajectoryPose(m_trajectory.getInitialPose());
-          // m_drive.resetOdometry(m_trajectory.getInitialPose(), m_drive.getGyroscopeRotation());
-        //} else {
-        //  if (!ignoreLocalizationErrors && Math.sqrt(Math.pow((m_drive.getPose().getX() - m_trajectory.getInitialPose().getX()), 2) +
-        //    Math.pow((m_drive.getPose().getY() - m_trajectory.getInitialPose().getY()), 2)) > 3) {
-        //      System.out.println("Trajectory Error: Distance > 3.");
-        //      System.out.println("Trajectory Start X: " + m_trajectory.getInitialPose().getX());
-        //      System.out.println("Trajectory Start Y: " + m_trajectory.getInitialPose().getY());
-        //      m_state = 3;
-        //      break;
-        //    }
-        //}
+      case 0: // make sure we're near the start of the trajectory
+          if (Math.sqrt(Math.pow((m_drive.getPose().getX() - m_trajectory.getInitialPose().getX()), 2) +
+            Math.pow((m_drive.getPose().getY() - m_trajectory.getInitialPose().getY()), 2)) > .25) {
+              m_state = 3;
+              break;
+            }
         m_state++;
         break;
       case 1: // reset the timer and go!
@@ -82,9 +75,7 @@ public class FollowTrajectory extends CommandBase {
         break;
     }
 
-    m_drive.drive(targetSpeeds.vxMetersPerSecond, targetSpeeds.vyMetersPerSecond, 
-    targetSpeeds.omegaRadiansPerSecond, true);
-
+    m_drive.drive(targetSpeeds);
   }
 
   // Called once the command ends or is interrupted.
@@ -98,9 +89,4 @@ public class FollowTrajectory extends CommandBase {
   public boolean isFinished() {
     return m_state > 2;
   }
-
- // public static void forceResetOdometry() {
- //   forceResetOdometry = true;
- //   ignoreLocalizationErrors = true;
- // }
 }

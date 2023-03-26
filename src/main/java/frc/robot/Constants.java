@@ -1,10 +1,6 @@
 package frc.robot;
-//import edu.wpi.first.math.geometry.Rotation2d;
-//import edu.wpi.first.math.geometry.Rotation3d;
-//import edu.wpi.first.math.geometry.Transform2d;
-//import edu.wpi.first.math.geometry.Transform3d;
+
 import edu.wpi.first.math.geometry.Translation2d;
-//import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
@@ -44,25 +40,10 @@ public final class Constants {
         public static final double MAX_ARM_SPEED = .3;
         public static final double MAX_WRIST_SPEED = .6;
 
-    //Arm angles
-        public static final double MAX_ARM_ANGLE = 255;
-        public static final double STOW_ARM_ANGLE = 250;
-        public static final double LOW_ARM_ANGLE = 233;
-        public static final double MID_ARM_ANGLE = 145;
-        public static final double HIGH_ARM_ANGLE = 127;
-        public static final double MIN_ARM_ANGLE = 122;
-
- /*   public static final double MAX_WRIST_ANGLE = 15;
-    public static final double STOW_WRIST_ANGLE = 12;
-    public static final double SHELF_WRIST_ANGLE = -20;
-    public static final double LOW_WRIST_ANGLE = -3.2;
-    public static final double MID_WRIST_ANGLE = -18;
-    public static final double HIGH_WRIST_ANGLE = -20;
-    public static final double MIN_WRIST_ANGLE = -33;*/
     //wrist angles through bore encoder
-    public static final double MIN_WRIST_ANGLE = 75;
-    public static final double STOW_WRIST_ANGLE = 81;
-    public static final double LOW_WRIST_ANGLE = 131;
+    public static final double MIN_WRIST_ANGLE = 65;
+    public static final double STOW_WRIST_ANGLE = 75;
+    public static final double LOW_WRIST_ANGLE = 118;
     public static final double MID_WRIST_ANGLE = 185;
     public static final double SHELF_WRIST_ANGLE = 183;
     public static final double HIGH_WRIST_ANGLE = 180;

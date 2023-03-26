@@ -10,11 +10,13 @@ import frc.robot.subsystems.Drivetrain;
 
 public class DriveDistanceMetersNew extends CommandBase {
   private Drivetrain m_drive;
+
   private Pose2d startPose;
   private double distanceMeters;
   private double translationVelocityMetersPerSecond;
   /** Creates a new DriveDistanceMeters. */
   public DriveDistanceMetersNew(Drivetrain drive, double distanceMeters, double translationVelocityMetersPerSecond) {
+
     // Use addRequirements() here to declare subsystem dependencies.
     m_drive = drive;
     this.distanceMeters = distanceMeters;
@@ -25,7 +27,6 @@ public class DriveDistanceMetersNew extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("Running DriveDistanceMeters command");
     startPose = m_drive.getPose();
     if (distanceMeters < 0.0 ) {
       translationVelocityMetersPerSecond *= -1.0;
@@ -37,6 +38,7 @@ public class DriveDistanceMetersNew extends CommandBase {
   public void execute() {
     
     m_drive.drive(this.translationVelocityMetersPerSecond, 0.0, 0.0,true);
+
   }
 
   // Called once the command ends or is interrupted.
@@ -50,14 +52,12 @@ public class DriveDistanceMetersNew extends CommandBase {
   public boolean isFinished() {
     Pose2d currentPose = m_drive.getPose();
     Pose2d relativePose = currentPose.relativeTo(startPose);
-    System.out.println("Distance: " + relativePose.getX());
-    System.out.println("distance 2 " + distanceMeters);
     boolean shouldStop = false;
     if (distanceMeters >= 0.0 ) {
-        shouldStop = relativePose.getX() > distanceMeters;
+        shouldStop = relativePose.getY() > distanceMeters;
     }
     else {
-        shouldStop = relativePose.getX() < distanceMeters;
+        shouldStop = relativePose.getY() < distanceMeters;
     }
     return shouldStop;
   }

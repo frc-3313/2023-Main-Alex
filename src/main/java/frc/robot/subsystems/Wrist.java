@@ -25,12 +25,13 @@ public class Wrist extends SubsystemBase {
   private double minPowerAtExtended = 0.03;
   private final PIDController pid = new PIDController(kp, 0.0, 0.0);
   private double setpoint = Constants.STOW_WRIST_ANGLE;
-  private double setpointIncrementer = 0.5;
+  private double setpointIncrementer = 1;
   private double motorOutput = 0.0;
   private RelativeEncoder relEncoder;
   // Settings
   private boolean usingPID = true;
   private boolean settingMinLevel = true;
+  private double wristSpeed = Constants.MAX_WRIST_SPEED;
 
 
   public Wrist() {
@@ -75,11 +76,16 @@ public class Wrist extends SubsystemBase {
   public double getMinPower() {
     return minPowerAtExtended;
   }
-
+  public void setWristSpeed(double speed){
+    wristSpeed = speed;
+  }
   public double getPidOutput() {
     double speed = pid.calculate(getDegrees(), setpoint) + getFeedForward();
-    if (speed >= Constants.MAX_WRIST_SPEED) {
-      return Constants.MAX_WRIST_SPEED;
+    if (speed >= wristSpeed) {
+      return wristSpeed;
+    }
+    else if (speed <= -wristSpeed) {
+      return -wristSpeed;
     }
     return speed;
   }

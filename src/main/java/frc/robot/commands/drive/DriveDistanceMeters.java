@@ -5,8 +5,10 @@
 package frc.robot.commands.drive;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
+
 
 public class DriveDistanceMeters extends CommandBase {
   private Drivetrain m_drive;
@@ -25,8 +27,10 @@ public class DriveDistanceMeters extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("Running DriveDistanceMeters command");
     startPose = m_drive.getPose();
+    if (distanceMeters < 0.0 ) {
+      translationVelocityMetersPerSecond *= -1.0;
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -51,7 +55,6 @@ public class DriveDistanceMeters extends CommandBase {
   public boolean isFinished() {
     Pose2d currentPose = m_drive.getPose();
     Pose2d relativePose = currentPose.relativeTo(startPose);
-    System.out.println("Distance: " + relativePose.getX());
     boolean shouldStop = false;
     if (distanceMeters >= 0.0 ) {
         shouldStop = relativePose.getX() > distanceMeters;
