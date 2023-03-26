@@ -191,7 +191,15 @@ public class Drivetrain extends SubsystemBase {
   public double getGyroXVel() {
     return ahrs.getRawGyroX();
   }
-
+  public Rotation2d getYaw() {
+    return (DriveConstants.invertGyro) ? Rotation2d.fromDegrees(360 - ahrs.getYaw()) : Rotation2d.fromDegrees(ahrs.getYaw());
+}
+  public double getRoll(){
+    return ahrs.getRoll();
+  }
+  public double getPitch(){
+    return ahrs.getPitch();
+  }
   public FieldRelativeSpeed getFieldRelativeSpeed() {
     return m_fieldRelVel;
   }
@@ -237,6 +245,13 @@ public class Drivetrain extends SubsystemBase {
     m_odometry.resetPosition(ahrs.getRotation2d().times(-1.0), getModulePositions(), pose);
     m_autoOdometry.resetPosition(ahrs.getRotation2d().times(-1.0), getModulePositions(), pose);
   }
+
+  /**
+   * Resets the odometry and gyro to the specified pose.
+   *
+   * @param pose in which to set the odometry and gyro.
+   */
+
   public CommandBase resetOdometryFactory(Rotation2d rotation){
     return new RunCommand(() -> {resetOdometry(rotation);}, this).withName("Reset Odometry");
   }

@@ -4,13 +4,13 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Grabber;
 import frc.robot.subsystems.Wrist;
-import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.commands.ArmWristCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.drive.DriveDistanceMeters;
 
 public class GroundPickup {
-    public static SequentialCommandGroup GroundPickupCommand(Swerve s_Swerve, Arm s_Arm, Wrist s_Wrist, Grabber s_Grabber){
+    public static SequentialCommandGroup GroundPickupCommand(Drivetrain s_Swerve, Arm s_Arm, Wrist s_Wrist, Grabber s_Grabber){
         
         return new SequentialCommandGroup(
             s_Grabber.startRollersCommand().withTimeout(.25),

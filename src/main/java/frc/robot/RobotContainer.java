@@ -11,8 +11,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.util.controllers.ButtonBox;
-import frc.robot.commands.autos.AutoHighR;
-import frc.robot.commands.autos.MeterPlace;
 import frc.robot.commands.drive.DriveByController;
 import frc.robot.commands.ArmWristCommand;
 import frc.robot.subsystems.Arm;
@@ -20,6 +18,7 @@ import frc.robot.subsystems.Grabber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Wrist;
 import frc.robot.Constants.*;
+import frc.robot.commands.drive.autos.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -48,7 +47,7 @@ public class RobotContainer {
     private final Command auto1 = new Autocone3(s_Swerve, m_arm, m_wrist, m_grabber, m_timer);
     private final Command auto2 = new Autoleftred(s_Swerve, m_arm, m_wrist, m_grabber, m_timer);
     private final Command auto3 = new AutoBlueRight(s_Swerve, m_arm, m_wrist, m_grabber, m_timer);
-    private final Command testing = new AutoPoseTesting(s_Swerve, m_arm, m_wrist, m_grabber, m_timer);
+    //private final Command testing = new AutoPoseTesting(s_Swerve, m_arm, m_wrist, m_grabber, m_timer);
 
     /* Commands */
     private final DriveByController m_drive = new DriveByController(s_Swerve, m_driverController);

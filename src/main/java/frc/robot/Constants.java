@@ -35,10 +35,21 @@ public final class Constants {
             kMaxAngularSpeed, kMaxAngularAccel); // Creates a trapezoidal motion for the auto rotational commands
       }
    
-    //speeds
-        public static final double ARM_SPEED = .075;
-        public static final double MAX_ARM_SPEED = .3;
-        public static final double MAX_WRIST_SPEED = .6;
+        public static final double CHARGE_STATION_LEVEL = 2;
+      //speeds
+    public static final double MAX_ARM_SPEED = .3;
+    public static final double MAX_WRIST_SPEED = .6;
+    public static final double AUTO_ARM_SPEED = .5;
+    public static final double AUTO_WRIST_SPEED = 1;
+
+        //Arm angles
+      public static final double MAX_ARM_ANGLE = 255;
+      public static final double STOW_ARM_ANGLE = 250;
+      public static final double LOW_ARM_ANGLE = 230;
+      public static final double MID_ARM_ANGLE = 145;
+      public static final double SHELF_ARM_ANGLE = 142;
+      public static final double HIGH_ARM_ANGLE = 127;
+      public static final double MIN_ARM_ANGLE = 122;
 
     //wrist angles through bore encoder
     public static final double MIN_WRIST_ANGLE = 65;
@@ -86,6 +97,8 @@ public final class Constants {
    * Static method containing all Drivetrain constants
    */
   public static final class DriveConstants {
+    public static final boolean invertGyro = true; // Always ensure Gyro is CCW+ CW-
+
     public static final int kFrontLeftDriveMotorPort = 19; // CANID of the Translation SparkMAX
     public static final int kFrontRightDriveMotorPort = 4; // CANID of the Translation SparkMAX
     public static final int kBackLeftDriveMotorPort = 6; // CANID of the Translation SparkMAX

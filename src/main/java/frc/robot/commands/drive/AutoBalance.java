@@ -8,10 +8,10 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.Drivetrain;
 
 public class AutoBalance extends CommandBase {
-  private Swerve m_drive;
+  private Drivetrain m_drive;
   private static double m_pitch;
   private static double m_roll;
   private static double true_angle;
@@ -23,7 +23,7 @@ public class AutoBalance extends CommandBase {
 
   private static int m_state;
   /** Creates a new AutoBalance. */
-  public AutoBalance(Swerve drive) {
+  public AutoBalance(Drivetrain drive) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_drive = drive;
     addRequirements(m_drive);
@@ -34,7 +34,7 @@ public class AutoBalance extends CommandBase {
   public void initialize() {
     m_heading = m_drive.getYaw();
     m_degrees = m_heading.getDegrees();
-    m_drive.resetOdometry(new Pose2d(0,0,m_heading), m_heading);
+    m_drive.resetOdometry(new Pose2d(0,0,m_heading));
   }
 
   /* Tomorrow when the farm boys find this freak of nature,
@@ -63,10 +63,10 @@ public class AutoBalance extends CommandBase {
     if ((m_position_y < maxDistance) || (m_position_x < maxDistance)) {
       if (true_angle > Constants.CHARGE_STATION_LEVEL) {
         if (true_angle > 0) {
-          m_drive.drive(-Math.cos(Math.toRadians(m_degrees))*Constants.MAX_TRAJ_VELOCITY, Math.sin(Math.toRadians(m_degrees))*Constants.MAX_TRAJ_VELOCITY, 0);
+          m_drive.drive(-Math.cos(Math.toRadians(m_degrees))*Constants.MAX_TRAJ_VELOCITY, Math.sin(Math.toRadians(m_degrees))*Constants.MAX_TRAJ_VELOCITY, 0.0, true);
         } 
         else if (true_angle < 0){
-          m_drive.drive(Math.cos(Math.toRadians(m_degrees))*Constants.MAX_TRAJ_VELOCITY, -Math.sin(Math.toRadians(m_degrees))*Constants.MAX_TRAJ_VELOCITY, 0);
+          m_drive.drive(Math.cos(Math.toRadians(m_degrees))*Constants.MAX_TRAJ_VELOCITY, -Math.sin(Math.toRadians(m_degrees))*Constants.MAX_TRAJ_VELOCITY, 0.0, true);
         }
       } else {
         m_state = 1;

@@ -8,14 +8,14 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
-public class DriveDistanceMetersNew extends CommandBase {
+public class Strafe extends CommandBase {
   private Drivetrain m_drive;
 
   private Pose2d startPose;
   private double distanceMeters;
   private double translationVelocityMetersPerSecond;
   /** Creates a new DriveDistanceMeters. */
-  public DriveDistanceMetersNew(Drivetrain drive, double distanceMeters, double translationVelocityMetersPerSecond) {
+  public Strafe(Drivetrain drive, double distanceMeters, double translationVelocityMetersPerSecond) {
 
     // Use addRequirements() here to declare subsystem dependencies.
     m_drive = drive;

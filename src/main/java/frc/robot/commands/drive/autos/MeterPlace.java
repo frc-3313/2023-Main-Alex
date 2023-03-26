@@ -18,9 +18,8 @@ public class MeterPlace extends SequentialCommandGroup {
         Command setArmStow = new ArmWristCommand(s_Arm, Constants.STOW_ARM_ANGLE, Constants.MAX_ARM_SPEED, s_Wrist, Constants.STOW_WRIST_ANGLE, Constants.MAX_WRIST_SPEED);
         Command dropPiececommand = new AutoOpenGrabber(s_Grabber);
 
-        Command stopswervecommand = new AutoSpeed(s_Swerve, 0, 0, 0, 0, m_timer);
-        Command as1command = new DriveDistanceMetersNew(s_Swerve, 1, .5);
-        Command as2command = new DriveDistanceMetersNew(s_Swerve, -1, .5);
+        Command as1command = new DriveDistanceMeters(s_Swerve, 1, .5);
+        Command as2command = new DriveDistanceMeters(s_Swerve, -1, .5);
 
         addCommands(
             setArmHigh.withTimeout(3),

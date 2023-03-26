@@ -9,11 +9,11 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.Drivetrain;
 
 public class AutoBalanceSimple extends CommandBase {
   /** Creates a new AutoBalanceSimple. */
-  private Swerve m_drive;
+  private Drivetrain m_drive;
   private Pose2d m_startPose;
   private double m_lastAngle;
   private int m_lockedCounter;
@@ -35,7 +35,7 @@ public class AutoBalanceSimple extends CommandBase {
   private final double p_initialClimbSpeed = 0.5;
   private final double p_climbMaxDistance = 1.5;
 
-  public AutoBalanceSimple(Swerve drive) {
+  public AutoBalanceSimple(Drivetrain drive) {
     m_drive = drive;
     addRequirements(m_drive);
   }
@@ -82,7 +82,7 @@ public class AutoBalanceSimple extends CommandBase {
       lock();
     } else {
       // drive up
-      m_drive.drive(m_climbSpeed * Math.signum(currentAngle), 0, 0);
+      m_drive.drive(m_climbSpeed * Math.signum(currentAngle), 0, 0, true);
       if (!m_driving) {
         m_driving = true;
         m_driveCounter = 0;

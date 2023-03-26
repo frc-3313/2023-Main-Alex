@@ -17,10 +17,10 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.Drivetrain;
 
 public class FollowHolonomicTrajectory extends CommandBase {
-  private final Swerve m_drive;
+  private final Drivetrain m_drive;
   private final Trajectory m_trajectory;
   private final Rotation2d m_rotation;
   private final boolean m_resetOdometry;
@@ -36,7 +36,7 @@ public class FollowHolonomicTrajectory extends CommandBase {
   private boolean m_cancel = false;
 
   /** Creates a new FollowHolonomicTrajectory. */
-  public FollowHolonomicTrajectory(Swerve drive, Trajectory trajectory, Rotation2d startRotation,  Rotation2d endRotation, boolean resetOdometry) {
+  public FollowHolonomicTrajectory(Drivetrain drive, Trajectory trajectory, Rotation2d startRotation,  Rotation2d endRotation, boolean resetOdometry) {
     m_drive = drive;
     m_trajectory = trajectory;
     m_rotation = endRotation.minus(startRotation);
@@ -45,7 +45,7 @@ public class FollowHolonomicTrajectory extends CommandBase {
     addRequirements(m_drive);
   }
 
-  public FollowHolonomicTrajectory(Swerve drive, Trajectory trajectory, boolean resetOdometry) {
+  public FollowHolonomicTrajectory(Drivetrain drive, Trajectory trajectory, boolean resetOdometry) {
     this(drive, trajectory, new Rotation2d(), new Rotation2d(), resetOdometry);
   }
 
@@ -63,7 +63,7 @@ public class FollowHolonomicTrajectory extends CommandBase {
     m_controller.setTolerance(new Pose2d(p_xTolerance, p_yTolerance, Rotation2d.fromDegrees(p_thetaTolerance)));
 
     if (m_resetOdometry) {
-      m_drive.resetTrajectoryPose(m_trajectory.getInitialPose());
+      m_drive.resetOdometry(m_trajectory.getInitialPose());
     } else {
       Transform2d offset = m_drive.getPose().minus(m_trajectory.getInitialPose());
       if (offset.getTranslation().getDistance(new Translation2d()) > 3.0 || offset.getRotation().getDegrees() > 45.0 ) {
@@ -86,10 +86,6 @@ public class FollowHolonomicTrajectory extends CommandBase {
 
     ChassisSpeeds targetSpeeds = m_controller.calculate(currentPose, desiredState, targetRotation);
 
-    SmartDashboard.putNumber("Auto:Measured vX", m_drive.getChassisSpeeds().vxMetersPerSecond);
-    SmartDashboard.putNumber("Auto:Measured vY", m_drive.getChassisSpeeds().vyMetersPerSecond);
-    SmartDashboard.putNumber("Auto:Measured omega", m_drive.getChassisSpeeds().omegaRadiansPerSecond);
-
     SmartDashboard.putNumber("Auto:Desired vX", desiredState.velocityMetersPerSecond * Math.cos(desiredState.poseMeters.getRotation().getRadians()));
     SmartDashboard.putNumber("Auto:Desired vY", desiredState.velocityMetersPerSecond * Math.sin(desiredState.poseMeters.getRotation().getRadians()));
     SmartDashboard.putNumber("Auto:Desired omega", desiredState.curvatureRadPerMeter);
@@ -98,7 +94,7 @@ public class FollowHolonomicTrajectory extends CommandBase {
     SmartDashboard.putNumber("Auto:Commanded vY", targetSpeeds.vyMetersPerSecond);
     SmartDashboard.putNumber("Auto:Commanded omega", targetSpeeds.omegaRadiansPerSecond);
 
-    if (!m_cancel) m_drive.drive(targetSpeeds);
+    if (!m_cancel) m_drive.drive(targetSpeeds.vxMetersPerSecond, targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, true);
   }
 
   // Called once the command ends or is interrupted.
