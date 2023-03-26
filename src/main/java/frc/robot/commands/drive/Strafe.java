@@ -9,13 +9,13 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Swerve;
 
-public class DriveDistanceMetersNew extends CommandBase {
+public class Strafe extends CommandBase {
   private Swerve m_drive;
   private Pose2d startPose;
   private double distanceMeters;
   private double translationVelocityMetersPerSecond;
   /** Creates a new DriveDistanceMeters. */
-  public DriveDistanceMetersNew(Swerve drive, double distanceMeters, double translationVelocityMetersPerSecond) {
+  public Strafe(Swerve drive, double distanceMeters, double translationVelocityMetersPerSecond) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_drive = drive;
     this.distanceMeters = distanceMeters;
@@ -26,7 +26,6 @@ public class DriveDistanceMetersNew extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("Running DriveDistanceMeters command");
     startPose = m_drive.getPose();
     if (distanceMeters < 0.0 ) {
       translationVelocityMetersPerSecond *= -1.0;
@@ -37,7 +36,7 @@ public class DriveDistanceMetersNew extends CommandBase {
   @Override
   public void execute() {
     
-    m_drive.drive(new Translation2d(this.translationVelocityMetersPerSecond, 0.0), 0.0,false, false);
+    m_drive.drive(new Translation2d(0.0, this.translationVelocityMetersPerSecond), 0.0,false, false);
   }
 
   // Called once the command ends or is interrupted.
@@ -51,14 +50,12 @@ public class DriveDistanceMetersNew extends CommandBase {
   public boolean isFinished() {
     Pose2d currentPose = m_drive.getPose();
     Pose2d relativePose = currentPose.relativeTo(startPose);
-    System.out.println("Distance: " + relativePose.getX());
-    System.out.println("distance 2 " + distanceMeters);
     boolean shouldStop = false;
     if (distanceMeters >= 0.0 ) {
-        shouldStop = relativePose.getX() > distanceMeters;
+        shouldStop = relativePose.getY() > distanceMeters;
     }
     else {
-        shouldStop = relativePose.getX() < distanceMeters;
+        shouldStop = relativePose.getY() < distanceMeters;
     }
     return shouldStop;
   }

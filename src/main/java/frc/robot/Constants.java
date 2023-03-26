@@ -1,14 +1,8 @@
 package frc.robot;
 
 import com.revrobotics.CANSparkMax.IdleMode;
-//import edu.wpi.first.math.geometry.Rotation2d;
-//import edu.wpi.first.math.geometry.Rotation3d;
-//import edu.wpi.first.math.geometry.Transform2d;
-//import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
-//import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import frc.lib.util.SwerveModuleConstants;
 
@@ -30,7 +24,7 @@ public final class Constants {
         public static final double openLoopRamp = 0.25;
         public static final double closedLoopRamp = 0;
 
-        public static final double driveGearRatio = (5.9/ 1.0);//(6.12 / 1.0); //FIXME 6.12:1 otters used 9.0
+        public static final double driveGearRatio = (5.9/ 1.0);//(6.12 / 1.0); 
         public static final double angleGearRatio = (12.8 / 1.0); // 12.8:1
 //12.8 90=270, 
         public static final SwerveDriveKinematics swerveKinematics =
@@ -45,7 +39,7 @@ public final class Constants {
 
         /* Swerve Current Limiting */
         public static final int angleContinuousCurrentLimit = 20;
-        public static final int driveContinuousCurrentLimit = 40;
+        public static final int driveContinuousCurrentLimit = 50;
 
         /* Angle Motor PID Values */
         public static final double angleKP = 0.01;
@@ -71,15 +65,16 @@ public final class Constants {
         public static final double angleConversionFactor = 360.0 / angleGearRatio;
 
         /* Swerve Profiling Values */
-        public static final double maxSpeed = .5; // meters per second
-        public static final double maxAngularVelocity = .5;
+        public static final double maxSpeed = 2.5; // meters per second
+        public static final double maxAngularVelocity = .9;//both were .5, .75
+        public static final double maxAccelarationDrive = 1;//time to max in seconds
 
         /* Neutral Modes */
         public static final IdleMode angleNeutralMode = IdleMode.kBrake;
         public static final IdleMode driveNeutralMode = IdleMode.kBrake;
 
         /* Motor Inverts */
-        public static final boolean driveInvert = true;//TODO fixme
+        public static final boolean driveInvert = true;
         public static final boolean angleInvert = false;
 
         /* Angle Encoder Invert */
@@ -91,7 +86,8 @@ public final class Constants {
           public static final int driveMotorID = 30;
           public static final int angleMotorID = 31;
           public static final int canCoderID = 20;
-          public static final double angleOffset = 18.896;
+          //public static final double angleOffset = 18.896;
+          public static final double angleOffset = 241.084;
           public static final SwerveModuleConstants constants =
               new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
@@ -127,67 +123,68 @@ public final class Constants {
         }
       }
 
-    public static final class AutoConstants { //TODO: The below constants are used in the example auto, and must be tuned to specific robot
-        public static final double kMaxSpeedMetersPerSecondA = 6;
-        public static final double kMaxAccelerationMetersPerSecondSquaredA = 3;
-        public static final double kMaxAngularSpeedRadiansPerSecondA = Math.PI;
-        public static final double kMaxAngularSpeedRadiansPerSecondSquaredA = Math.PI;
+    // Drive Train
+    public static final int CHARGE_STATION_LEVEL = 2;
 
-        public static final double kMaxSpeedMetersPerSecondB = 2;
-        public static final double kMaxAccelerationMetersPerSecondSquaredB = 1;
-        public static final double kMaxAngularSpeedRadiansPerSecondB = Math.PI;
-        public static final double kMaxAngularSpeedRadiansPerSecondSquaredB = Math.PI;
-    
-        public static final double kPXController = 1;
-        public static final double kPYController = 1;
-        public static final double kPThetaController = 1;
-    
-        /* Constraint for the motion profilied robot angle controller */
-        public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
-            new TrapezoidProfile.Constraints(
-                kMaxAngularSpeedRadiansPerSecondB, kMaxAngularSpeedRadiansPerSecondSquaredB);
-    }
-   
-    //speeds
-        public static final double ARM_SPEED = .075;
-        public static final double MAX_ARM_SPEED = .3;
-        public static final double MAX_WRIST_SPEED = .6;
+//speeds
+    public static final double MAX_ARM_SPEED = .3;
+    public static final double MAX_WRIST_SPEED = .6;
+    public static final double AUTO_ARM_SPEED = .5;
+    public static final double AUTO_WRIST_SPEED = 1;
 
-    //Arm angles
-        public static final double MAX_ARM_ANGLE = 255;
-        public static final double STOW_ARM_ANGLE = 250;
-        public static final double LOW_ARM_ANGLE = 233;
-        public static final double MID_ARM_ANGLE = 145;
-        public static final double HIGH_ARM_ANGLE = 127;
-        public static final double MIN_ARM_ANGLE = 122;
+//Arm angles
+    public static final double MAX_ARM_ANGLE = 255;
+    public static final double STOW_ARM_ANGLE = 250;
+    public static final double LOW_ARM_ANGLE = 230;
+    public static final double MID_ARM_ANGLE = 145;
+    public static final double SHELF_ARM_ANGLE = 142;
+    public static final double HIGH_ARM_ANGLE = 127;
+    public static final double MIN_ARM_ANGLE = 122;
 
- /*   public static final double MAX_WRIST_ANGLE = 15;
-    public static final double STOW_WRIST_ANGLE = 12;
-    public static final double SHELF_WRIST_ANGLE = -20;
-    public static final double LOW_WRIST_ANGLE = -3.2;
-    public static final double MID_WRIST_ANGLE = -18;
-    public static final double HIGH_WRIST_ANGLE = -20;
-    public static final double MIN_WRIST_ANGLE = -33;*/
+
     //wrist angles through bore encoder
-    public static final double MIN_WRIST_ANGLE = 75;
-    public static final double STOW_WRIST_ANGLE = 81;
-    public static final double LOW_WRIST_ANGLE = 131;
+    public static final double MIN_WRIST_ANGLE = 65;
+    public static final double STOW_WRIST_ANGLE = 75;
+    public static final double LOW_WRIST_ANGLE = 118;
     public static final double MID_WRIST_ANGLE = 185;
-    public static final double HIGH_WRIST_ANGLE = 193;
-    public static final double MAX_WRIST_ANGLE = 200;
-        // Trajectory
-        public static final double MAX_TRAJ_VELOCITY = 4;
-        public static final double MAX_TRAJ_CENTRIP_ACC = 3;
-        public static final double MAX_TRAJ_ACCELERATION = 3;
-        public static final double MAX_VELOCITY = 4;
-        public static final int SHOULDER_ID = 40;
-        public static final int SHOULDER_ID_2 = 41;
-        public static final int WRIST_ID = 42;
-        public static final int WRIST_ENCODER_ID = 1;
+    public static final double SHELF_WRIST_ANGLE = 183;
+    public static final double HIGH_WRIST_ANGLE = 180;
+    public static final double MAX_WRIST_ANGLE = 210;
+    // Trajectory
+    public static final double MAX_TRAJ_VELOCITY = 4;
+    public static final double MAX_TRAJ_CENTRIP_ACC = 3;
+    public static final double MAX_TRAJ_ACCELERATION = 3;
+    public static final double MAX_VELOCITY = 4;
+    
+    public static final int SHOULDER_ID = 40;
+    public static final int SHOULDER_ID_2 = 41;
+    public static final int WRIST_ID = 42;
+    public static final int WRIST_ENCODER_ID = 1;
 
-        public static final int GRABBER_ROLLER_ID = 0;
-        public static final int GRABBER_DROP = 1;
-        public static final int GRABBER_GRAB = 0;
-        public static final int GRABBER_CAN = 0;
-        public static final int SHOULDER_ENCODER_ID = 0;
+    public static final int GRABBER_ROLLER_ID = 0;
+    public static final int GRABBER_DROP = 1;
+    public static final int GRABBER_GRAB = 0;
+    public static final int GRABBER_CAN = 0;
+    public static final int SHOULDER_ENCODER_ID = 0;
+
+    //Controller button id's
+
+    public static int A = 1;
+    public static int B = 2;
+    public static int X = 3;
+    public static int Y = 4;
+    public static int LEFTBUMPER = 5;
+    public static int RIGHTBUMPER = 6;
+    public static int BACK = 7;
+    public static int START = 8;
+    public static int CLICKRIGHTJOYSTICK = 9;
+    public static int CLICKLEFTJOYSTICK = 10;
+    
+    //Controller Axis id's
+    public static int LEFTX = 0;
+    public static int LEFTY = 1;
+    public static int LEFTTRIGGER = 2;
+    public static int RIGHTTRIGGER = 3;
+    public static int RIGHTX = 4;
+    public static int RIGHTY = 5;
 }

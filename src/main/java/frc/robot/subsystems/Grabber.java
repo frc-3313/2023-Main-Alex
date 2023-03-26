@@ -21,13 +21,13 @@ public class Grabber extends SubsystemBase {
 
   public boolean hasGamePiece;
   public void grabPiece() {
-    grabberSolenoid.set(Value.kForward);
+    grabberSolenoid.set(Value.kReverse);
     hasGamePiece = true;
     //stopRollers();
   }
   
   public void dropPiece() {
-    grabberSolenoid.set(Value.kReverse);
+    grabberSolenoid.set(Value.kForward);
     hasGamePiece = false;
   }
   
