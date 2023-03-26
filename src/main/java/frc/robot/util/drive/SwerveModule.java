@@ -145,7 +145,13 @@ public class SwerveModule {
   public SwerveModuleState getState() {
     return new SwerveModuleState(m_driveEncoder.getVelocity(), new Rotation2d(getTurnEncoder()));
   }
-
+  public Rotation2d getCanCoder(){
+    return Rotation2d.fromDegrees(m_turningAbsoluteEncoder.getAbsolutePosition());
+}
+  public void resetToAbsolute(){
+    double absolutePosition = getCanCoder().getDegrees() - m_angularOffset;
+    m_turningEncoder.setPosition(absolutePosition);
+}
   /**
    * Sets the desired state for the module.
    *
