@@ -5,9 +5,12 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+<<<<<<< Updated upstream
 
 //import frc.lib.math.Conversions;
 import frc.lib.util.CTREModuleState;
+=======
+>>>>>>> Stashed changes
 import frc.lib.util.SwerveModuleConstants;
 //import frc.robot.Constants;
 
@@ -15,13 +18,11 @@ import frc.lib.util.SwerveModuleConstants;
 //import com.ctre.phoenix.motorcontrol.DemandType;
 // import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
-
 import frc.lib.util.CANSparkMaxUtil.Usage;
 import frc.lib.util.CANSparkMaxUtil;
 //import frc.lib.util.CANCoderUtil;
@@ -76,7 +77,7 @@ public class SwerveModule {
 
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop){
         /* This is a custom optimize function, since default WPILib optimize assumes continuous controller which CTRE and Rev onboard is not */
-        desiredState = CTREModuleState.optimize(desiredState, getState().angle); 
+        desiredState = SwerveModuleState.optimize(desiredState, getState().angle); 
         setAngle(desiredState);
         setSpeed(desiredState, isOpenLoop);
     }
