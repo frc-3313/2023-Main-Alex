@@ -45,7 +45,7 @@ public class SwerveModule {
   // (Currently not being used)
   // This value should be passed into the class contructor as part of the
   // "tuningVals" array
-  private final double moduleID;
+  //private final double moduleID;
 
   // Creates a PIDController for the translation motor on the swerve module
   // The PID values should be passed into the class constructor via the
@@ -107,7 +107,7 @@ public class SwerveModule {
                                                                                  // scale with bus voltage
     m_turningMotor.setInverted(false);
     m_turningEncoder = m_driveMotor.getEncoder(); // Obtain the driveEncoder from the drive SparkMAX
-    m_turningEncoder.setPositionConversionFactor(Swerve.angleConversionFactor);
+    m_turningEncoder.setPositionConversionFactor(ModuleConstants.angleConversionFactor);
     m_turningMotor.setIdleMode(IdleMode.kBrake); // Motor direction is not inverted
     m_turningMotor.burnFlash(); // Write these parameters to the SparkMAX so we can be sure the values are
                                 // correct
@@ -134,7 +134,7 @@ public class SwerveModule {
     m_drivePIDController = new PIDController(tuningVals[2], 0.0, 0.0);
 
     // Sets the moduleID to the value stored in the tuningVals array
-    moduleID = tuningVals[3];
+    //moduleID = tuningVals[3];
   }
 
   /**

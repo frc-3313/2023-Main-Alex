@@ -1,7 +1,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -9,18 +8,18 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
+import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.util.controllers.ButtonBox;
 import frc.robot.commands.autos.AutoHighR;
-import frc.robot.commands.autos.Drive1Meter;
 import frc.robot.commands.autos.MeterPlace;
-
-import frc.robot.commands.TeleopSwerve;
+import frc.robot.commands.drive.DriveByController;
 import frc.robot.commands.ArmWristCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Grabber;
-import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Wrist;
+import frc.robot.Constants.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -33,20 +32,13 @@ public class RobotContainer {
     //public double accel;
     //public double accel2;
     /* Controllers */
-    private final Joystick driver = new Joystick(0);
+    private final XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
     private final ButtonBox m_buttonBox = new ButtonBox(1);
 
-    /* Drive Controls */
-    private final int translationAxis = XboxController.Axis.kLeftY.value;
-    private final int strafeAxis = XboxController.Axis.kLeftX.value;
-    private final int rotationAxis = XboxController.Axis.kRightX.value;
-    private final int speedControl = XboxController.Axis.kRightTrigger.value;
     /* Driver Buttons */
-    //private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
-    private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
 
     /* Subsystems */
-    private final Swerve s_Swerve = new Swerve();
+    private final Drivetrain s_Swerve = new Drivetrain();
     private final Grabber m_grabber = new Grabber();
     private final Arm m_arm = new Arm();
     private final Wrist m_wrist = new Wrist();
@@ -58,20 +50,16 @@ public class RobotContainer {
     private final Command Auto1Meter = new MeterPlace(s_Swerve, m_arm, m_wrist, m_grabber, m_timer);
     private final Command WaitHere = new WaitCommand(1);
 
+    /* Commands */
+    private final DriveByController m_drive = new DriveByController(s_Swerve, m_driverController);
+    
+
+
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {     
         
-        s_Swerve.setDefaultCommand(
-            new TeleopSwerve(
-                s_Swerve, 
-                () -> -driver.getRawAxis(translationAxis)/1.3, 
-                () -> -driver.getRawAxis(strafeAxis)/1.3, 
-                () -> driver.getRawAxis(rotationAxis)/2/9*13.5,    ///2/9*6.75, 
-                () -> robotCentric.getAsBoolean(), 
-                () -> driver.getRawAxis(speedControl)/1.5,
-                () -> gyroOffset
-            )
-        );
+        s_Swerve.setDefaultCommand(m_drive);
+
 
         // Configure the button bindings
         configureButtonBindings();
@@ -90,7 +78,7 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
-        //zeroGyro.onTrue(new InstantCommand(() -> this.zeroGyro()));
+        new POVButton(m_driverController, 0).onTrue(s_Swerve.resetOdometryFactory(new Rotation2d(0.0)));
     // ARM (CONTROL STICK)
     m_buttonBox.ArmUp.whileTrue(new RunCommand(() -> m_wrist.raise())).onFalse(new InstantCommand(() -> m_arm.stop()));
     m_buttonBox.ArmDown.whileTrue(new RunCommand(() -> m_wrist.lower())).onFalse(new InstantCommand(() -> m_arm.stop()));
@@ -113,11 +101,6 @@ public class RobotContainer {
     m_buttonBox.DownDpadTrigger.onTrue(m_grabber.startRollersCommand()).onFalse(m_grabber.stopRollersCommand());
     m_buttonBox.UpDpadTrigger.onTrue(m_grabber.startRollersReverseCommand()).onFalse(m_grabber.stopRollersCommand());
 
-    }
-
-    public void zeroGyro() {
-        s_Swerve.zeroGyro();
-        gyroOffset = 0.0;
     }
 
     /**

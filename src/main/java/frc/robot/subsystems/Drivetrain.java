@@ -237,6 +237,9 @@ public class Drivetrain extends SubsystemBase {
     m_odometry.resetPosition(ahrs.getRotation2d().times(-1.0), getModulePositions(), pose);
     m_autoOdometry.resetPosition(ahrs.getRotation2d().times(-1.0), getModulePositions(), pose);
   }
+  public CommandBase resetOdometryFactory(Rotation2d rotation){
+    return new RunCommand(() -> {resetOdometry(rotation);}, this).withName("Reset Odometry");
+  }
 
   public void setPose(Pose2d pose) {
     m_odometry.resetPosition(ahrs.getRotation2d().times(-1.0), getModulePositions(), pose);

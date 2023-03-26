@@ -6,17 +6,15 @@ package frc.robot.commands.drive;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Swerve;
-import edu.wpi.first.math.geometry.Translation2d;
-
+import frc.robot.subsystems.Drivetrain;
 
 public class DriveDistanceMeters extends CommandBase {
-  private Swerve m_drive;
+  private Drivetrain m_drive;
   private Pose2d startPose;
   private double distanceMeters;
   private double translationVelocityMetersPerSecond;
   /** Creates a new DriveDistanceMeters. */
-  public DriveDistanceMeters(Swerve drive, double distanceMeters, double translationVelocityMetersPerSecond) {
+  public DriveDistanceMeters(Drivetrain drive, double distanceMeters, double translationVelocityMetersPerSecond) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_drive = drive;
     this.distanceMeters = distanceMeters;
@@ -37,11 +35,9 @@ public class DriveDistanceMeters extends CommandBase {
     if (distanceMeters < 0.0 ) {
       translationVelocityMetersPerSecond *= -1.0;
     }
-    m_drive.drive(
-            new Translation2d(translationVelocityMetersPerSecond, 0), 
-            0, 
-            !false, 
-            true);
+
+    m_drive.drive(translationVelocityMetersPerSecond, 0.0, 0, true);
+
   }
 
   // Called once the command ends or is interrupted.

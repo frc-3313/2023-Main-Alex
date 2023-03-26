@@ -10,12 +10,10 @@ import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.math.trajectory.Trajectory;
-import frc.robot.subsystems.Swerve;
-import edu.wpi.first.math.geometry.Translation2d;
-
+import frc.robot.subsystems.Drivetrain;
 
 public class FollowTrajectory extends CommandBase {
-  private Swerve m_drive;
+  private Drivetrain m_drive;
   private Trajectory m_trajectory;
   private boolean m_resetOdometry;
   private RamseteController m_controller = new RamseteController(1.5, 0.7);
@@ -23,7 +21,7 @@ public class FollowTrajectory extends CommandBase {
   private double m_duration;
   private int m_state;
 
-  public FollowTrajectory(final Swerve drive, Trajectory trajectory, boolean resetOdometry) {
+  public FollowTrajectory(final Drivetrain drive, Trajectory trajectory, boolean resetOdometry) {
     m_drive = drive;
     m_resetOdometry = resetOdometry;
     m_trajectory = trajectory;
@@ -78,10 +76,8 @@ public class FollowTrajectory extends CommandBase {
         break;
     }
 
-    m_drive.drive(new Translation2d(targetSpeeds.vxMetersPerSecond, targetSpeeds.vyMetersPerSecond), 
-    targetSpeeds.omegaRadiansPerSecond, 
-    !false, 
-    true);
+    m_drive.drive(targetSpeeds.vxMetersPerSecond, targetSpeeds.vyMetersPerSecond, 
+    targetSpeeds.omegaRadiansPerSecond, true);
 
   }
 
