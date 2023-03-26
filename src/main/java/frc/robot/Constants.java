@@ -65,9 +65,9 @@ public final class Constants {
         public static final double angleConversionFactor = 360.0 / angleGearRatio;
 
         /* Swerve Profiling Values */
-        public static final double maxSpeed = 1.75; // meters per second
+        public static final double maxSpeed = 2.5; // meters per second
         public static final double maxAngularVelocity = .9;//both were .5, .75
-        public static final double maxAccelarationDrive = 1;//time in seconds
+        public static final double maxAccelarationDrive = 1;//time to max in seconds
 
         /* Neutral Modes */
         public static final IdleMode angleNeutralMode = IdleMode.kBrake;
@@ -147,9 +147,9 @@ public final class Constants {
     public static final double STOW_WRIST_ANGLE = 75;
     public static final double LOW_WRIST_ANGLE = 118;
     public static final double MID_WRIST_ANGLE = 185;
-    public static final double SHELF_WRIST_ANGLE = 185;
-    public static final double HIGH_WRIST_ANGLE = 190;
-    public static final double MAX_WRIST_ANGLE = 200;
+    public static final double SHELF_WRIST_ANGLE = 183;
+    public static final double HIGH_WRIST_ANGLE = 180;
+    public static final double MAX_WRIST_ANGLE = 210;
     // Trajectory
     public static final double MAX_TRAJ_VELOCITY = 4;
     public static final double MAX_TRAJ_CENTRIP_ACC = 3;

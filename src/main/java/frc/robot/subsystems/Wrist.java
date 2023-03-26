@@ -25,7 +25,7 @@ public class Wrist extends SubsystemBase {
   private double minPowerAtExtended = 0.03;
   private final PIDController pid = new PIDController(kp, 0.0, 0.0);
   private double setpoint = Constants.STOW_WRIST_ANGLE;
-  private double setpointIncrementer = 0.5;
+  private double setpointIncrementer = 1;
   private double motorOutput = 0.0;
   private RelativeEncoder relEncoder;
   // Settings

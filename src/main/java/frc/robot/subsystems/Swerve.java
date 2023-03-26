@@ -193,8 +193,8 @@ public class Swerve extends SubsystemBase {
 
     public void stop() {
         drive(
-            new Translation2d(0, 0).times(Constants.Swerve.maxSpeed), 
-            0 * Constants.Swerve.maxAngularVelocity, 
+            new Translation2d(0, 0), 
+            0, 
             !false, 
             true);
        }

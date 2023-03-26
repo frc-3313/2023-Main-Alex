@@ -15,6 +15,7 @@ import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.drive.autos.Autocone3;
 import frc.robot.commands.drive.autos.Autoleftred;
 import frc.robot.commands.drive.autos.AutoBlueRight;
+import frc.robot.commands.drive.autos.AutoPoseTesting;
 import frc.robot.commands.ArmWristCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Grabber;
@@ -49,6 +50,7 @@ public class RobotContainer {
     private final Command auto1 = new Autocone3(s_Swerve, m_arm, m_wrist, m_grabber, m_timer);
     private final Command auto2 = new Autoleftred(s_Swerve, m_arm, m_wrist, m_grabber, m_timer);
     private final Command auto3 = new AutoBlueRight(s_Swerve, m_arm, m_wrist, m_grabber, m_timer);
+    private final Command testing = new AutoPoseTesting(s_Swerve, m_arm, m_wrist, m_grabber, m_timer);
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {     
@@ -73,6 +75,7 @@ public class RobotContainer {
         auto_chooser.setDefaultOption("Middle field", auto1);
         auto_chooser.addOption("edge Red", auto2);
         auto_chooser.addOption("edge Blue", auto3);
+        //auto_chooser.addOption("don't choose this", testing);
         SmartDashboard.putData(auto_chooser);
 
     }

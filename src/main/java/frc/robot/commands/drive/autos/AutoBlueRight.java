@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.drive.Strafe;
 import frc.robot.commands.drive.DriveDistanceMeters;
+import frc.robot.commands.drive.GoToPose;
 
 public class AutoBlueRight extends SequentialCommandGroup {
     public AutoBlueRight(Swerve s_Swerve, Arm s_Arm, Wrist s_Wrist, Grabber s_Grabber,Timer m_timer){

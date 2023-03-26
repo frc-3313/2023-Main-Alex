@@ -8,26 +8,28 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.math.trajectory.Trajectory;
 import frc.robot.subsystems.Swerve;
 import frc.robot.util.TrajectoryHelper;
 
-public class GoToPose extends CommandBase {
+public class Rotate extends CommandBase {
   private Swerve m_drive;
-  private Pose2d m_targetPose;
+  private double m_trargetRotation;
   private Trajectory m_trajectory;
   private RamseteController m_controller = new RamseteController();
   private Timer m_timer = new Timer();
   private double m_duration;
   private int m_state;
+  private Pose2d m_targetPose;
 
-  public GoToPose(final Swerve drive, Pose2d targetPose) {
+  public Rotate(final Swerve drive, double Rotation) {
     m_drive = drive;
-    m_targetPose = targetPose;
-    
+    m_trargetRotation = Rotation;
 
+    m_targetPose = new Pose2d(m_drive.getPose().getTranslation(),new Rotation2d (Math.toRadians(m_drive.getPose().getRotation().getDegrees() + m_trargetRotation)));
     addRequirements(m_drive);
   }
 
