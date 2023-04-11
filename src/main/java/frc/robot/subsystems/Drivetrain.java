@@ -103,8 +103,8 @@ public class Drivetrain extends SubsystemBase {
     rot = performKeepAngle(xSpeed, ySpeed, rot); // Calls the keep angle function to update the keep angle or rotate
                                                  // depending on driver input
 
-    // SmartDashboard.putNumber("xSpeed Commanded", xSpeed);
-    // SmartDashboard.putNumber("ySpeed Commanded", ySpeed);
+     SmartDashboard.putNumber("xSpeed Commanded", xSpeed);
+     SmartDashboard.putNumber("ySpeed Commanded", ySpeed);
 
     // creates an array of the desired swerve module states based on driver command
     // and if the commands are field relative or not
@@ -129,15 +129,18 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Gyro Y", ahrs.getRawGyroY());
     SmartDashboard.putNumber("Gyro Z", ahrs.getRawGyroZ());
 
-    // SmartDashboard.putNumber("Accel X", m_fieldRelAccel.ax);
-    // SmartDashboard.putNumber("Accel Y", m_fieldRelAccel.ay);
-    // SmartDashboard.putNumber("Alpha", m_fieldRelAccel.alpha);
+     SmartDashboard.putNumber("Accel X", m_fieldRelAccel.ax);
+     SmartDashboard.putNumber("Accel Y", m_fieldRelAccel.ay);
+     SmartDashboard.putNumber("Alpha", m_fieldRelAccel.alpha);
 
-    // SmartDashboard.putNumber("Front Left Encoder", m_frontLeft.getTurnEncoder());
-    // SmartDashboard.putNumber("Front Right Encoder",
-    // m_frontRight.getTurnEncoder());
-    // SmartDashboard.putNumber("Back Left Encoder", m_backLeft.getTurnEncoder());
-    // SmartDashboard.putNumber("Back Right Encoder", m_backRight.getTurnEncoder());
+     SmartDashboard.putNumber("FL Encoder", m_frontLeft.getTurnEncoder());
+     SmartDashboard.putNumber("FR Encoder", m_frontRight.getTurnEncoder());
+     SmartDashboard.putNumber("BL Encoder", m_backLeft.getTurnEncoder());
+     SmartDashboard.putNumber("BR Encoder", m_backRight.getTurnEncoder());
+     SmartDashboard.putNumber("FL CanCoder", m_frontLeft.getAbsolutePosition());
+     SmartDashboard.putNumber("FR CanCoder", m_frontRight.getAbsolutePosition());
+     SmartDashboard.putNumber("BL CanCoder", m_backLeft.getAbsolutePosition());
+     SmartDashboard.putNumber("BR CanCoder", m_backRight.getAbsolutePosition());
 
     // Update swerve drive odometry periodically so robot pose can be tracked
     updateOdometry();

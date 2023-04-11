@@ -105,13 +105,12 @@ public class SwerveModule {
     m_turningMotor.setSmartCurrentLimit(CurrentLimit.kRotation); // Set current limit for the drive motor
     m_turningMotor.enableVoltageCompensation(GlobalConstants.kVoltCompensation); // Enable voltage compensation so gains
                                                                                  // scale with bus voltage
-    m_turningMotor.setInverted(false);
-    m_turningEncoder = m_driveMotor.getEncoder(); // Obtain the driveEncoder from the drive SparkMAX
+    m_turningMotor.setInverted(true);
+    m_turningEncoder = m_turningMotor.getEncoder(); // Obtain the driveEncoder from the drive SparkMAX
     m_turningEncoder.setPositionConversionFactor(ModuleConstants.angleConversionFactor);
     m_turningMotor.setIdleMode(IdleMode.kBrake); // Motor direction is not inverted
     m_turningMotor.burnFlash(); // Write these parameters to the SparkMAX so we can be sure the values are
                                 // correct
-
     // Creates the analog potentiometer for the tracking of the swerve module
     // position converted to the range of 0-2*PI in radians offset by the tuned
     // module offset
@@ -120,6 +119,7 @@ public class SwerveModule {
     m_turningAbsoluteEncoder.configFactoryDefault();
     m_turningAbsoluteEncoder.configAllSettings(swerveCanCoderConfig);
     m_angularOffset = angularOffset;
+    resetToAbsolute();
 
     // Limit the PID Controller's input range between -pi and pi and set the input
     // to be continuous so the PID will command the shortest path.
@@ -145,13 +145,16 @@ public class SwerveModule {
   public SwerveModuleState getState() {
     return new SwerveModuleState(m_driveEncoder.getVelocity(), new Rotation2d(getTurnEncoder()));
   }
-  public Rotation2d getCanCoder(){
-    return Rotation2d.fromDegrees(m_turningAbsoluteEncoder.getAbsolutePosition());
-}
+ // public Rotation2d getCanCoder(){
+ //   return Rotation2d.fromDegrees(m_turningAbsoluteEncoder.getAbsolutePosition());
+// }
   public void resetToAbsolute(){
-    double absolutePosition = getCanCoder().getDegrees() - m_angularOffset;
+    double absolutePosition = m_turningAbsoluteEncoder.getAbsolutePosition() - m_angularOffset;
     m_turningEncoder.setPosition(absolutePosition);
 }
+  public double getAbsolutePosition(){
+    return m_turningAbsoluteEncoder.getAbsolutePosition();
+  }
   /**
    * Sets the desired state for the module.
    *
