@@ -1,4 +1,4 @@
-package frc.robot.commands.drive.autos;
+package frc.robot.commands.autos;
 
 import frc.robot.commands.*;
 import frc.robot.subsystems.Swerve;
@@ -15,13 +15,14 @@ import frc.robot.Constants;
 public class MeterPlace extends SequentialCommandGroup {
     public MeterPlace(Swerve s_Swerve, Arm s_Arm,Wrist s_Wrist, Grabber s_Grabber, Timer m_timer){
 
-        Command setArmHigh = new ArmWristCommand(s_Arm, Constants.HIGH_ARM_ANGLE, Constants.MAX_ARM_SPEED, s_Wrist, Constants.HIGH_WRIST_ANGLE, Constants.MAX_WRIST_SPEED);
-        Command setArmStow = new ArmWristCommand(s_Arm, Constants.STOW_ARM_ANGLE, Constants.MAX_ARM_SPEED, s_Wrist, Constants.STOW_WRIST_ANGLE, Constants.MAX_WRIST_SPEED);
-        Command dropPiececommand = new AutoOpenGrabber(s_Grabber);
+        Command setArmHigh = new ArmWristCommand(s_Arm, Constants.HIGH_ARM_ANGLE, s_Wrist, Constants.HIGH_WRIST_ANGLE);
+        Command setArmStow = new ArmWristCommand(s_Arm, Constants.STOW_ARM_ANGLE, s_Wrist, Constants.STOW_WRIST_ANGLE);
+        Command dropPiececommand = new AutoOpenGrabber(s_Grabber, 0.2, m_timer);
 
         Command waitcommand = new WaitCommand(1);
-        Command as1command = new DriveDistanceMeters(s_Swerve, 1, .5);
-        Command as2command = new DriveDistanceMeters(s_Swerve, -1, .5);
+        Command stopswervecommand = new AutoSpeed(s_Swerve, 0, 0, 0, 0, m_timer, false);
+        Command as1command = new DriveDistanceMetersNew(s_Swerve, 1, .5);
+        Command as2command = new DriveDistanceMetersNew(s_Swerve, -1, .5);
 
 
         addCommands(
@@ -31,7 +32,9 @@ public class MeterPlace extends SequentialCommandGroup {
             new WaitCommand(.25),
             dropPiececommand.withTimeout(.5),
             as2command,
-            setArmStow.withTimeout(3)
+            setArmStow.withTimeout(3),
+            stopswervecommand
+
         );
     }
 }

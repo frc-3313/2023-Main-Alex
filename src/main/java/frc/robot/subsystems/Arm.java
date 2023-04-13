@@ -5,6 +5,8 @@
 
 package frc.robot.subsystems;
 
+import javax.lang.model.util.ElementScanner14;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -26,7 +28,6 @@ public class Arm extends SubsystemBase {
   private double setpoint = Constants.STOW_ARM_ANGLE;
   private double setpointIncrementer = 2;
   private double motorOutput = 0.0;
-  private double ArmSpeed = Constants.MAX_ARM_SPEED;
 
   // Settings
   private boolean usingPID = true;
@@ -47,7 +48,7 @@ public class Arm extends SubsystemBase {
       double tempSetpoint = setpoint -= setpointIncrementer;
       setSetpoint(tempSetpoint);
     } else {
-      motorOutput = Constants.MAX_ARM_SPEED;
+      motorOutput = Constants.ARM_SPEED;
     }
   }
 
@@ -56,7 +57,7 @@ public class Arm extends SubsystemBase {
       double tempSetpoint = setpoint += setpointIncrementer;
       setSetpoint(tempSetpoint);
     } else {
-      motorOutput = -Constants.MAX_ARM_SPEED;
+      motorOutput = -Constants.ARM_SPEED;
     }
   }
 
@@ -73,17 +74,15 @@ public class Arm extends SubsystemBase {
   public double getMinPower() {
     return minPowerAtExtended;
   }
-  public void setArmSpeed(double speed){
-    ArmSpeed = speed;
-  }
+
   public double getPidOutput() {
     //System.out.println("arm setpoint " + setpoint);
     double speed = pid.calculate(getDegrees(), setpoint) + getFeedForward();
-    if (speed >= ArmSpeed) {
-      return ArmSpeed;
+    if (speed >= Constants.MAX_ARM_SPEED) {
+      return Constants.MAX_ARM_SPEED;
     }
-    else if (speed <= -ArmSpeed) {
-      return -ArmSpeed;
+    else if (speed <= -Constants.MAX_ARM_SPEED) {
+      return -Constants.MAX_ARM_SPEED;
     }
     return speed;
   }

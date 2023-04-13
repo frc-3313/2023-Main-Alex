@@ -4,11 +4,12 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-import frc.robot.Constants;
 
 
 public class ButtonBox extends Joystick {
 	
+    private static int GRAB = 9;
+    private static int DROP = 10;
     private static int SET_LOW = 1;
     private static int SET_MIDDLE = 2;
     private static int SET_HIGH = 4;
@@ -57,21 +58,21 @@ public class ButtonBox extends Joystick {
   //public boolean RightTrigger() {
 	//	return this.RightTrigger();
 	//}
-	  public Trigger RightJoystick = new JoystickButton(this, Constants.CLICKRIGHTJOYSTICK);
-    public Trigger LeftJoystick = new JoystickButton(this, Constants.CLICKLEFTJOYSTICK);
+	  public Trigger grabButton = new JoystickButton(this, GRAB);
+    public Trigger dropButton = new JoystickButton(this, DROP);
     public Trigger setLow = new JoystickButton(this, SET_LOW);
     public Trigger setMiddle = new JoystickButton(this, SET_MIDDLE);
     public Trigger setHigh = new JoystickButton(this, SET_HIGH);    
     public Trigger setStow = new JoystickButton(this, STOW);
-    public Trigger RightBumper = new JoystickButton(this, RIGHTBUMPER);
-    public Trigger LeftBumper = new JoystickButton(this, LEFTBUMPER);
+    public Trigger ArmUp = new JoystickButton(this, RIGHTBUMPER);
+    public Trigger ArmDown = new JoystickButton(this, LEFTBUMPER);
     public Trigger RollerStart = new JoystickButton(this, START);
     public Trigger ReverseRollerStart = new JoystickButton(this, BACK);
     public Trigger UpDpadTrigger = new POVButton(this, 0);
     public Trigger RightDpadTrigger = new POVButton(this, 90);
     public Trigger DownDpadTrigger = new POVButton(this, 180);
     public Trigger LeftDpadTrigger = new POVButton(this, 270);
-    public Trigger LeftTrigger = new JoystickAnalogButton(this, Constants.LEFTTRIGGER);
-    public Trigger RightTrigger = new JoystickAnalogButton(this, Constants.RIGHTTRIGGER);
+    //public Trigger leftTrigger = new Trigger(() -> this.LeftTrigger());
+    //public Trigger RightTrigger = new Trigger(() -> this.RightTrigger());
 
 }
