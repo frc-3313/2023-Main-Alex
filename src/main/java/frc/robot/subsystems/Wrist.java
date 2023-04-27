@@ -31,6 +31,7 @@ public class Wrist extends SubsystemBase {
   // Settings
   private boolean usingPID = true;
   private boolean settingMinLevel = true;
+  public boolean restrictSpeed;
 
 
   public Wrist() {
@@ -91,6 +92,7 @@ public class Wrist extends SubsystemBase {
   }
 
   public void setSetpoint(double newSetpoint) {
+    if(!restrictSpeed){
     if (newSetpoint > Constants.MAX_WRIST_ANGLE) {
       setpoint = Constants.MAX_WRIST_ANGLE;
     } else if (newSetpoint < Constants.MIN_WRIST_ANGLE) {
@@ -98,10 +100,14 @@ public class Wrist extends SubsystemBase {
     } else {
       setpoint = newSetpoint;
     }
+    }
+    else{
+      setpoint = getDegrees();
+    }
   }
 
   public boolean atSetpoint() {
-    if((getDegrees() < setpoint + 2) && getDegrees() > setpoint - 2)
+    if((getDegrees() < setpoint + 3) && getDegrees() > setpoint - 3)
       return true;
     else
       return false;

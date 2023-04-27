@@ -45,7 +45,7 @@ public final class Constants {
 
         /* Swerve Current Limiting */
         public static final int angleContinuousCurrentLimit = 20;
-        public static final int driveContinuousCurrentLimit = 40;
+        public static final int driveContinuousCurrentLimit = 35;
 
         /* Angle Motor PID Values */
         public static final double angleKP = 0.01;
@@ -71,8 +71,9 @@ public final class Constants {
         public static final double angleConversionFactor = 360.0 / angleGearRatio;
 
         /* Swerve Profiling Values */
-        public static final double maxSpeed = .5; // meters per second
-        public static final double maxAngularVelocity = .5;
+        public static final double maxSpeed = 5; // meters per second
+        public static final double maxAngularVelocity = 5;
+        public static final double slowSpeed = .5;
 
         /* Neutral Modes */
         public static final IdleMode angleNeutralMode = IdleMode.kBrake;
@@ -91,7 +92,7 @@ public final class Constants {
           public static final int driveMotorID = 30;
           public static final int angleMotorID = 31;
           public static final int canCoderID = 20;
-          public static final double angleOffset = 18.896;
+          public static final double angleOffset = 241.7;
           public static final SwerveModuleConstants constants =
               new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
@@ -111,7 +112,7 @@ public final class Constants {
           public static final int driveMotorID = 36;
           public static final int angleMotorID = 37;
           public static final int canCoderID = 21;
-          public static final double angleOffset = 116.367;
+          public static final double angleOffset = 115.22;
           public static final SwerveModuleConstants constants =
               new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
@@ -158,6 +159,7 @@ public final class Constants {
         public static final double STOW_ARM_ANGLE = 250;
         public static final double LOW_ARM_ANGLE = 233;
         public static final double MID_ARM_ANGLE = 145;
+        public static final double SHELF_ARM_ANGLE = 142;
         public static final double HIGH_ARM_ANGLE = 127;
         public static final double MIN_ARM_ANGLE = 122;
 
@@ -173,6 +175,7 @@ public final class Constants {
     public static final double STOW_WRIST_ANGLE = 81;
     public static final double LOW_WRIST_ANGLE = 131;
     public static final double MID_WRIST_ANGLE = 185;
+    public static final double SHELF_WRIST_ANGLE = 185;
     public static final double HIGH_WRIST_ANGLE = 193;
     public static final double MAX_WRIST_ANGLE = 200;
         // Trajectory
