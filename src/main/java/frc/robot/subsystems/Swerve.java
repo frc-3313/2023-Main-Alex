@@ -23,6 +23,7 @@ public class Swerve extends SubsystemBase {
     public SwerveModule[] mSwerveMods;
     private final AHRS gyro;
     private double gyroOffset;
+    public boolean restrictSpeed;
 
     public Swerve() {
         gyro = new AHRS(SPI.Port.kMXP);
