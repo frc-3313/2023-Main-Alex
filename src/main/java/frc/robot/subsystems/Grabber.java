@@ -18,33 +18,25 @@ public class Grabber extends SubsystemBase {
 
   private final Talon m_roller = new Talon(Constants.GRABBER_ROLLER_ID);
   DoubleSolenoid grabberSolenoid = new DoubleSolenoid(Constants.GRABBER_CAN, PneumaticsModuleType.CTREPCM, Constants.GRABBER_DROP, Constants.GRABBER_GRAB);
-  public boolean restrictSpeed;
+
   public boolean hasGamePiece;
   public void grabPiece() {
-    if(!restrictSpeed){
     grabberSolenoid.set(Value.kForward);
     hasGamePiece = true;
-    }
     //stopRollers();
   }
   
   public void dropPiece() {
-    if (!restrictSpeed){
     grabberSolenoid.set(Value.kReverse);
     hasGamePiece = false;
-    }
   }
   
   public void startRollers() {
-    if(!restrictSpeed){
-    m_roller.set(-0.5);
-    }
+    m_roller.set(-.5);
   }
 
   public void startReverseRollers() {
-    if(!restrictSpeed){
-    m_roller.set(0.5);
-    }
+    m_roller.set(.5);
   }
 
   public void stopRollers() {

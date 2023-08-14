@@ -1,5 +1,6 @@
 package frc.robot.commands.autos;
 
+import frc.robot.commands.*;
 import frc.robot.subsystems.Swerve;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -15,7 +16,7 @@ public class Drive1Meter extends SequentialCommandGroup {
 
 
         Command waitcommand = new WaitCommand(1);
-        //Command stopswervecommand = new AutoSpeed(s_Swerve, 0, 0, 0, 0, m_timer, false);
+        Command stopswervecommand = new AutoSpeed(s_Swerve, 0, 0, 0, 0, m_timer, false);
         Command as1command = new DriveDistanceMetersNew(s_Swerve, 1, .5);
         
 

@@ -5,6 +5,8 @@
 
 package frc.robot.subsystems;
 
+import javax.lang.model.util.ElementScanner14;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -30,7 +32,6 @@ public class Arm extends SubsystemBase {
   // Settings
   private boolean usingPID = true;
   private boolean settingMinLevel = true;
-  public boolean restrictSpeed;
 
   public Arm() {
     pid.setTolerance(5.0);
@@ -91,7 +92,6 @@ public class Arm extends SubsystemBase {
   }
 
   public void setSetpoint(double newSetpoint) {
-    if(!restrictSpeed){
     if (newSetpoint > Constants.MAX_ARM_ANGLE) {
       setpoint = Constants.MAX_ARM_ANGLE;
     } else if (newSetpoint < Constants.MIN_ARM_ANGLE) {
@@ -99,11 +99,6 @@ public class Arm extends SubsystemBase {
     } else {
       setpoint = newSetpoint;
     }
-    }
-    else{
-      setpoint = getDegrees();
-    }
-
   }
 
   public boolean atSetpoint() {

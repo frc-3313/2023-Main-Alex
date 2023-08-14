@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.util.controllers.ButtonBox;
 import frc.robot.commands.autos.AutoHighR;
+import frc.robot.commands.autos.Drive1Meter;
 import frc.robot.commands.autos.MeterPlace;
 
 import frc.robot.commands.TeleopSwerve;
@@ -104,8 +105,7 @@ public class RobotContainer {
     
     // SET stow
     m_buttonBox.setStow.onTrue(new ArmWristCommand(m_arm, Constants.STOW_ARM_ANGLE, m_wrist, Constants.STOW_WRIST_ANGLE));
-    m_buttonBox.RightDpadTrigger.onTrue(new ArmWristCommand(m_arm, Constants.SHELF_ARM_ANGLE, m_wrist, Constants.SHELF_WRIST_ANGLE));
-
+    
 
     //grabber commands  
     m_buttonBox.grabButton.onTrue(m_grabber.grabPieceFactory());
@@ -130,13 +130,5 @@ public class RobotContainer {
         //return auto1;
         //return auto_chooser.getSelected();
         return Auto1Meter;
-        
-    }
-    public void setRrestrictSpeed(boolean b){
-        s_Swerve.restrictSpeed = b;
-        m_grabber.restrictSpeed = b;
-        m_arm.restrictSpeed = b;
-        m_wrist.restrictSpeed = b;
-
     }
 }

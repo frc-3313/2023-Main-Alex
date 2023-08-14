@@ -1,12 +1,19 @@
 package frc.robot;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 
+//import frc.lib.math.Conversions;
 import frc.lib.util.CTREModuleState;
 import frc.lib.util.SwerveModuleConstants;
+//import frc.robot.Constants;
+
+//import com.ctre.phoenix.motorcontrol.ControlMode;
+//import com.ctre.phoenix.motorcontrol.DemandType;
+// import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
 
 import com.revrobotics.CANSparkMax;
@@ -17,6 +24,7 @@ import com.revrobotics.SparkMaxPIDController;
 
 import frc.lib.util.CANSparkMaxUtil.Usage;
 import frc.lib.util.CANSparkMaxUtil;
+//import frc.lib.util.CANCoderUtil;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
 
 
@@ -36,6 +44,8 @@ public class SwerveModule {
     private final SparkMaxPIDController angleController;
 
     public CANCoderConfiguration swerveCanCoderConfig;
+
+    private SlewRateLimiter filter = new SlewRateLimiter(0.02);
     
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.Swerve.driveKS, Constants.Swerve.driveKV, Constants.Swerve.driveKA);
 
@@ -73,8 +83,14 @@ public class SwerveModule {
 
     private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop){
         if(isOpenLoop){
+            /*if (mDriveMotor.get() >= desiredState.speedMetersPerSecond){*/
                 double percentOutput = desiredState.speedMetersPerSecond / Constants.Swerve.maxSpeed;
                 mDriveMotor.set(percentOutput);
+           /* }
+            else {*/
+                //double percentOutput = filter.calculate (desiredState.speedMetersPerSecond);
+                //mDriveMotor.set(percentOutput);
+            //}
         }
         else {
             driveController.setReference(
