@@ -9,13 +9,13 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Swerve;
 
-public class DriveDistanceMeters extends CommandBase {
+public class Strafe extends CommandBase {
   private Swerve m_drive;
   private Pose2d startPose;
   private double distanceMeters;
   private double translationVelocityMetersPerSecond;
   /** Creates a new DriveDistanceMeters. */
-  public DriveDistanceMeters(Swerve drive, double distanceMeters, double translationVelocityMetersPerSecond) {
+  public Strafe(Swerve drive, double distanceMeters, double translationVelocityMetersPerSecond) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_drive = drive;
     this.distanceMeters = distanceMeters;
@@ -36,7 +36,7 @@ public class DriveDistanceMeters extends CommandBase {
   @Override
   public void execute() {
     
-    m_drive.drive(new Translation2d(this.translationVelocityMetersPerSecond, 0.0), 0.0,false, false);
+    m_drive.drive(new Translation2d(0.0, this.translationVelocityMetersPerSecond), 0.0,false, false);
   }
 
   // Called once the command ends or is interrupted.
@@ -52,10 +52,10 @@ public class DriveDistanceMeters extends CommandBase {
     Pose2d relativePose = currentPose.relativeTo(startPose);
     boolean shouldStop = false;
     if (distanceMeters >= 0.0 ) {
-        shouldStop = relativePose.getX() > distanceMeters;
+        shouldStop = relativePose.getY() > distanceMeters;
     }
     else {
-        shouldStop = relativePose.getX() < distanceMeters;
+        shouldStop = relativePose.getY() < distanceMeters;
     }
     return shouldStop;
   }

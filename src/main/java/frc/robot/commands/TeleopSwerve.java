@@ -42,9 +42,11 @@ public class TeleopSwerve extends CommandBase {
     @Override
     public void execute() {
         /* Get Values, Deadband*/
+        //if(resetGyro)
+        //    s_Swerve.zeroGyro();
         double translationVal = MathUtil.applyDeadband(translationSup.getAsDouble(), Constants.stickDeadband);
         double strafeVal = MathUtil.applyDeadband(strafeSup.getAsDouble(), Constants.stickDeadband);
-        double rotationVal = MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband);
+        double rotationVal = -MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband);
         //double targetRotation = MathUtil.applyDeadband(targetRotationSup.getAsDouble(), 0.5);
         double speedControlVal = MathUtil.applyDeadband(speedControlSup.getAsDouble(), Constants.stickDeadband);
         double gyroOffsetVal = gyroOffsetSup.getAsDouble();
@@ -59,7 +61,7 @@ public class TeleopSwerve extends CommandBase {
       //  }
         s_Swerve.setGyroOffset(gyroOffsetVal);
         s_Swerve.drive(
-            new Translation2d(translationVal, strafeVal).times(Constants.Swerve.maxSpeed).times(speedControlVal), 
+            new Translation2d(translationVal, strafeVal).times(Constants.Swerve.maxSpeed), 
             rotationVal * Constants.Swerve.maxAngularVelocity, 
             !robotCentricSup.getAsBoolean(), 
             true
